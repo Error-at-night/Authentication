@@ -23,12 +23,17 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide your password"]
   },
   verificationCode: String,
-  verificationCodeExipresAt: Date,
+  verificationCodeExpiresAt: Date,
   verified: Date,
   isVerified: {
     type: Boolean,
     default: false,
   },
+  lastVerificationEmailSentAt: {
+    type: Date,
+    default: null,
+  }
+
 }, { timestamps: true })
 
 UserSchema.pre('save', async function () {

@@ -18,9 +18,9 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 app.use(express.json());
 // app.use(cookieParser(process.env.JWT_SECRET));
 
-app.get("/", (req, res) => {
-  res.send("<p>Welcome</p>")
-})
+// app.get("/", (req, res) => {
+//   res.send("<p>Welcome</p>")
+// })
 
 app.use("/api/v1/auth", authRouter)
 
