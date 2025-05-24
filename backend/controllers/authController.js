@@ -23,9 +23,7 @@ const register = async (req, res, next) => {
     }
 
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
-    // const verificationCodeExpiresAt = Date.now() + 10 * 60 * 1000 // 10 minutes
-    const verificationCodeExpiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
-
+    const verificationCodeExpiresAt = Date.now() + 5 * 60 * 1000 
 
     const user = await User.create({ fullName, email, password, verificationCode, verificationCodeExpiresAt })
     
@@ -66,7 +64,7 @@ const verifyEmail = async (req, res, next) => {
 }
 
 const resendVerificationCode = async (req, res, next) => {
-  const email = req.body.email?.toLowerCase().trim()
+  const { email } = req.body
 
   try {
 
@@ -95,8 +93,7 @@ const resendVerificationCode = async (req, res, next) => {
     }
 
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
-    // const verificationCodeExpiresAt = now + 10 * 60 * 1000 // 10 minutes
-    const verificationCodeExpiresAt = now + 2 * 60 * 1000; // 2 minutes
+    const verificationCodeExpiresAt = now + 5 * 60 * 1000
 
     user.verificationCode = verificationCode
     user.verificationCodeExpiresAt = verificationCodeExpiresAt
