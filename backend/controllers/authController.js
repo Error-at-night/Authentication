@@ -31,7 +31,7 @@ const register = async (req, res, next) => {
     
     await sendVerificationEmail({ email: user.email, fullName: user.fullName, verificationCode: user.verificationCode });
 
-    res.status(StatusCodes.CREATED).json({ msg: "Please verify your email" })
+    res.status(StatusCodes.CREATED).json({ message: "Please verify your email" })
 
   } catch(error) {
     next(error)
@@ -59,7 +59,7 @@ const verifyEmail = async (req, res, next) => {
 
     await user.save();
 
-    res.status(StatusCodes.OK).json({ msg: "Email verified" });
+    res.status(StatusCodes.OK).json({ message: "Email verified" });
   } catch (error) {
     next(error);
   }
@@ -91,7 +91,7 @@ const resendVerificationCode = async (req, res, next) => {
     }
 
     if (user.verificationCodeExpiresAt > now) {
-      return res.status(StatusCodes.OK).json({ msg: "A verification code was already sent recently. Please check your inbox." })
+      return res.status(StatusCodes.OK).json({ message: "A verification code was already sent recently. Please check your inbox." })
     }
 
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
@@ -105,7 +105,7 @@ const resendVerificationCode = async (req, res, next) => {
 
     await sendVerificationEmail({ email: user.email, fullName: user.fullName, verificationCode: user.verificationCode });
 
-    res.status(StatusCodes.OK).json({ msg: "Verification code resent. Please check your inbox." });
+    res.status(StatusCodes.OK).json({ message: "Verification code resent. Please check your inbox." });
   
   } catch(error) {
     next(error)
@@ -172,7 +172,7 @@ const login = async (req, res, next) => {
 
     attachCookiesToResponse({ res, user: tokenUser, refreshToken })
     
-    res.status(StatusCodes.OK).json({ msg: "Login successful", user: tokenUser })
+    res.status(StatusCodes.OK).json({ message: "Login successful", user: tokenUser })
 
   } catch(error) {
     next(error)

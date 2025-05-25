@@ -1,9 +1,9 @@
 export type RegisterResponse = {
-    msg: string;
+    message: string;
 }
 
 export type LoginResponse = {
-  msg: string;
+  message: string;
   user: {
     fullName: string;
     userId: string;
