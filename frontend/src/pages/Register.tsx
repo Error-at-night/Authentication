@@ -53,9 +53,9 @@ function Register() {
                   return "Please provide a valid email address (eg johndoe@gmail.com)";
                 }
 
-                const part = value.split("@")[0];
-                if (part.length < 5) {
-                  return "Email username must be at least 5 characters long";
+                const firstPart = value.split("@")[0];
+                if (firstPart.length < 5) {
+                  return "The name before '@' must be at least 5 characters long";
                 }
 
                 return true;

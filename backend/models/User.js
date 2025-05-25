@@ -15,10 +15,25 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide your email"],
     trim: true,
     lowercase: true,
-    validate: {
-      validator: validator.isEmail,
-      message: "Please provide a valid email"
-    }
+    validate: [
+      {
+        validator: validator.isEmail,
+        message: "Please provide your email address",
+      },
+      {
+        validator: function (value) {
+          return /@gmail\.com$/i.test(value);
+        },
+        message: "Please provide a valid email address (eg johndoe@gmail.com)",
+      },
+      {
+        validator: function (value) {
+          const firstPart = value.split("@")[0];
+          return firstPart.length >= 5;
+        },
+        message: "The name before '@' must be at least 5 characters long",
+      },
+    ],
   },
   password: {
     type: String,
