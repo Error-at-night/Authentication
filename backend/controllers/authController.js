@@ -1,4 +1,5 @@
 const User = require("../models/User")
+const Token = require("../models/Token")
 const CustomError = require("../errors")
 const { StatusCodes } = require("http-status-codes")
 const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, /* sendResetPasswordEmail */ } = require("../utils/index")
@@ -127,7 +128,7 @@ const login = async (req, res, next) => {
       throw new CustomError.BadRequestError("Invalid email")
     }
     
-    const isPasswordCorrect = await User.comparePassword(password)
+    const isPasswordCorrect = await user.comparePassword(password)
 
     if(!isPasswordCorrect) {
       throw new CustomError.BadRequestError("Invalid password")
@@ -171,7 +172,7 @@ const login = async (req, res, next) => {
 
     attachCookiesToResponse({ res, user: tokenUser, refreshToken })
     
-    res.status(StatusCodes.OK).json({ user: tokenUser })
+    res.status(StatusCodes.OK).json({ msg: "Login successful", user: tokenUser })
 
   } catch(error) {
     next(error)
