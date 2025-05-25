@@ -4,20 +4,20 @@ export function getErrorMessage(error: unknown): string {
     if (error.response) {
       switch (error.response.status) {
         case 400:
-          return error.response.data?.message || "Bad request. Please check your input.";
+          return error.response.data?.message || "Bad request";
         case 401:
-          return "Unauthorized. Please login and try again.";
+          return error.response.data?.message || "Authentication required. Please sign in.";
         case 403:
-          return "You do not have permission to perform this action.";
+          return error.response.data?.message || "Access denied. You don’t have permission to perform this action.";
         case 404:
-          return "Resource not found. Please try again later.";
+          return error.response.data?.message || "The page or resource you are trying to access does not exist.";
         case 500:
-          return "Internal server error. Please try again later.";
+          return error.response.data?.message || "Something went wrong. Please try again later";
         default:
-          return error.response.data?.message || `An unexpected error occurred`;
+          return error.response.data?.message || "An unexpected error occurred";
       }
     } else if (error.request) {
-      return "No response from server. Please check your internet connection.";
+      return "No response from server. Please check your internet connection and try again.";
     } else {
       return error.message || "An unknown error occurred.";
     }

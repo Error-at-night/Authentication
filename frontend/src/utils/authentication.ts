@@ -9,6 +9,10 @@ export const register = async (credentials: {fullName: string, email: string, pa
     return response.data
   } catch (error) {
     const errorMessage = getErrorMessage(error);
+    console.log(error)
+    console.log(error.response.data?.message)
+    console.log(error.request)
+    console.log(error.message)
     throw new Error(errorMessage);
   }
 }

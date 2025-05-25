@@ -46,9 +46,19 @@ function Register() {
               "border-red-500 focus:border-red-500 focus:outline-none" : "border-[#DAE1E7]"} border w-full py-2 px-4 rounded-md`}
             {...register("email", {
               required: "Please provide your email",
-              pattern: {
-                value: /^[\w-.]+@gmail\.com$/i,
-                message: "Must be an email address with at least 7 characters before @",
+              validate: (value) => {
+                const emailPattern = /^[\w.-]+@gmail\.com$/i;
+
+                if (!emailPattern.test(value)) {
+                  return "Please provide a valid email address (eg johndoe@gmail.com)";
+                }
+
+                const part = value.split("@")[0];
+                if (part.length < 5) {
+                  return "Email username must be at least 5 characters long";
+                }
+
+                return true;
               },
             })}
           />
