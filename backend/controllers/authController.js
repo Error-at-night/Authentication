@@ -1,7 +1,8 @@
 const User = require("../models/User")
 const CustomError = require("../errors")
 const { StatusCodes } = require("http-status-codes")
-const sendVerificationEmail = require("../utils/sendVerificationEmail")
+const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, /* sendResetPasswordEmail */ } = require("../utils/index")
+const crypto = require('crypto');
 
 const register = async (req, res, next) => {
   const { fullName, email, password, confirmPassword } = req.body
@@ -110,8 +111,67 @@ const resendVerificationCode = async (req, res, next) => {
   }
 }
 
-const login = (req, res) => {
+const login = async (req, res, next) => {
+
+  const { email, password } = req.body
+  
    try {
+
+    if(!email || !password) {
+      throw new CustomError.BadRequestError("Please provide email and password")
+    }
+
+    const user = await User.findOne({ email })
+
+    if(!user) {
+      throw new CustomError.BadRequestError("Invalid email")
+    }
+    
+    const isPasswordCorrect = await User.comparePassword(password)
+
+    if(!isPasswordCorrect) {
+      throw new CustomError.BadRequestError("Invalid password")
+    }
+
+    if(!user.isVerified) {
+      throw new CustomError.UnauthenticatedError("Please verify your email")
+    }
+
+    const tokenUser = createTokenUser(user)
+
+    let refreshToken = ""
+
+    const existingToken = await Token.findOne({ user: user._id })
+
+    if(existingToken) {
+      const { isValid } = existingToken
+
+      if(!isValid) {
+        throw new CustomError.UnauthenticatedError('Invalid Credentials');
+      }
+      
+      refreshToken = existingToken.refreshToken
+      attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+      res.status(StatusCodes.OK).json({ user: tokenUser });
+      return;
+    }
+
+    refreshToken = crypto.randomBytes(40).toString("hex")
+    const userAgent = req.headers["user-agent"]
+    const ip = req.ip
+
+    const userToken = {
+      refreshToken, 
+      userAgent, 
+      ip, 
+      user: user._id
+    }
+
+    await Token.create(userToken)
+
+    attachCookiesToResponse({ res, user: tokenUser, refreshToken })
+    
+    res.status(StatusCodes.OK).json({ user: tokenUser })
 
   } catch(error) {
     next(error)

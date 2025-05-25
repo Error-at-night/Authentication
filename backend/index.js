@@ -16,7 +16,7 @@ const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
 app.use(express.json());
-// app.use(cookieParser(process.env.JWT_SECRET));
+app.use(cookieParser(process.env.JWT_SECRET));
 
 // app.get("/", (req, res) => {
 //   res.send("<p>Welcome</p>")
