@@ -9,7 +9,7 @@ export function useRegister() {
   const { mutate: registerUser, isPending } = useMutation({
     mutationFn: register,
     onSuccess: () => {
-      navigate("/email-verification", { replace: true })
+      navigate("/verify-email", { replace: true })
       toast.success("Verify your email address")
     },
     onError: (error) => {

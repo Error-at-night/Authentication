@@ -1,5 +1,5 @@
 import axiosInstance from "./axios"
-import { type LoginResponse, type RegisterResponse } from "./axiosRequestResponseTypes"
+import { type LoginResponse, type RegisterResponse } from "./axiosResponseTypes"
 import { REGISTER_ENDPOINT } from "./constants"
 import { getErrorMessage } from "./helpers"
 
