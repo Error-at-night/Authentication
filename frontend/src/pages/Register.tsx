@@ -33,9 +33,6 @@ function Register() {
             "border-red-500 focus:border-red-500 focus:outline-none" : "border-[#DAE1E7]"} border w-full py-2 px-4 rounded-md`}
             {...register("fullName", { required: "Please provide your fullname",  minLength: { value: 7,
                 message: "Fullname must be at least 7 characters",
-              }, maxLength: {
-                value: 8,
-                message: "Fullname must be at most 20 characters"
               }})
             }
             disabled={isPending}
