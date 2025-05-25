@@ -2,17 +2,22 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { type RegisterFormData } from "../utils/types"
 import { useState } from "react";
 import { Eye, EyeOff } from 'lucide-react';
+import { useRegister } from '../hooks/authentication/useRegister';
 
 function Register() {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormData>();
+  const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<RegisterFormData>();
 
   const passwordValue = watch("password")
 
+  const { registerUser, isPending } = useRegister()
+
   const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
-    console.log(data)
+    registerUser(data, { onSettled: () => {
+      reset()
+    }})
   }
 
   return (
@@ -33,6 +38,7 @@ function Register() {
                 message: "Fullname must be at most 20 characters"
               }})
             }
+            disabled={isPending}
           />
           {errors.fullName && <p className="text-red-500 mt-1">{errors.fullName.message}</p>}
         </div>
@@ -93,7 +99,9 @@ function Register() {
           {errors.confirmPassword && <p className="text-red-500 mt-1">{errors.confirmPassword.message}</p>}
         </div>
         <div className="pt-5">
-          <button type="submit" className="text-white bg-black px-3 py-3 w-full rounded-md cursor-pointer font-semibold">
+          <button type="submit" className="text-white bg-black px-3 py-3 w-full rounded-md cursor-pointer font-semibold"
+            disabled={isPending}
+          >
             Create Account
           </button>
         </div>
