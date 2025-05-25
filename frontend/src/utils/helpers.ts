@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function getFriendlyErrorMessage(error: unknown): string {
+export function getErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
     if (error.response) {
       switch (error.response.status) {
