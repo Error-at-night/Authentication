@@ -2,6 +2,10 @@ export type RegisterResponse = {
     message: string;
 }
 
+export type VerifyEmailResponse = {
+  message: string
+}
+
 export type LoginResponse = {
   message: string;
   user: {
