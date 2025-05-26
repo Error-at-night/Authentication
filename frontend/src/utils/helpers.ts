@@ -4,7 +4,7 @@ export function getErrorMessage(error: unknown): string {
     if (error.response) {
       switch (error.response.status) {
         case 400:
-          return error.response.data?.message || "Bad request";
+          return error.response.data?.message || "Invalid request. Please verify your data and try again.";
         case 401:
           return error.response.data?.message || "Authentication required. Please sign in.";
         case 403:
