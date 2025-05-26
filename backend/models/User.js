@@ -2,6 +2,9 @@ const mongoose = require("mongoose")
 const validator = require("validator")
 const bcrypt = require('bcryptjs');
 
+const emailPattern = /@gmail\.com$/i
+const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/
+
 const UserSchema = new mongoose.Schema({
   fullName: {
     type: String,
@@ -21,13 +24,13 @@ const UserSchema = new mongoose.Schema({
         message: "Please provide your email address",
       },
       {
-        validator: function (value) {
-          return /@gmail\.com$/i.test(value);
+        validator: function(value) {
+          return emailPattern.test(value);
         },
         message: "Please provide a valid email address (eg johndoe@gmail.com)",
       },
       {
-        validator: function (value) {
+        validator: function(value) {
           const firstPart = value.split("@")[0];
           return firstPart.length >= 5;
         },
@@ -37,7 +40,13 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Please provide your password"]
+    required: [true, "Please provide your password"],
+    validate: {
+      validator: function(value) {
+        return passwordPattern.test(value);
+      },
+      message: "Password must be at least 8 characters, include an uppercase letter, number, and symbol",
+    },
   },
   verificationCode: String,
   verificationCodeExpiresAt: Date,
