@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 
 import Register from './pages/Register'
+import Login from './pages/Login';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,7 +19,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="register" element={<Register/>} />
-          <Route path="login" element={<h1>Register</h1>} />
+          <Route path="login" element={<Login/>} />
         </Routes>
       </BrowserRouter>
       <Toaster
