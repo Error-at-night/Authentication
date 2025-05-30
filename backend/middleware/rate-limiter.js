@@ -9,7 +9,7 @@ const registerRateLimter = rateLimit({
   handler: (req, res, next, options) => {
     return res.status(StatusCodes.TOO_MANY_REQUESTS).json({
       message: options.message || "Too many requests",
-    });
+    })
   },
 })
 
@@ -21,7 +21,7 @@ const verifyEmailRateLimiter = rateLimit({
   handler: (req, res, next, options) => {
     return res.status(StatusCodes.TOO_MANY_REQUESTS).json({
       message: options.message || "Too many requests",
-    });
+    })
   },
 })
 
@@ -33,7 +33,7 @@ const resendVerificationCodeRateLimiter = rateLimit({
   handler: (req, res, next, options) => {
     return res.status(StatusCodes.TOO_MANY_REQUESTS).json({
       message: options.message || "Too many requests",
-    });
+    })
   },
 })
 
@@ -45,7 +45,7 @@ const loginRateLimiter = rateLimit({
   handler: (req, res, next, options) => {
     return res.status(StatusCodes.TOO_MANY_REQUESTS).json({
       message: options.message || "Too many requests",
-    });
+    })
   },
 })
 

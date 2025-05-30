@@ -5,6 +5,10 @@ export type RegisterFormData = {
   confirmPassword: string
 }
 
+export type VerifyEmailFormData = {
+  verificationCode: string
+}
+
 export type LoginFormData = {
   email:  string,
   password: string,
