@@ -3,11 +3,11 @@ const router = express.Router()
 
 const { register, login, verifyEmail, resendVerificationCode, } = require("../controllers/authController")
 
-const resendVerificationCodeLimiter = require("../middleware/resend-verification-code-limiter")
+const { resendVerificationCodeRateLimiter, registerRateLimter, verifyEmailRateLimiter, loginRateLimiter } = require("../middleware/rateLimiter")
 
-router.post("/register", register)
-router.post("/verify-email", verifyEmail)
-router.post("/resend-verification-code", resendVerificationCodeLimiter, resendVerificationCode)
-router.post("/login", login)
+router.post("/register", registerRateLimter, register)
+router.post("/verify-email", verifyEmailRateLimiter, verifyEmail)
+router.post("/resend-verification-code", resendVerificationCodeRateLimiter, resendVerificationCode)
+router.post("/login", loginRateLimiter, login)
 
 module.exports = router

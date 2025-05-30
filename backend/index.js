@@ -5,6 +5,7 @@ const app = express()
 
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
+const rateLimiter = require('express-rate-limit');
 
 // database
 const connectDB = require("./db/connect")
@@ -17,6 +18,12 @@ const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
 app.set('trust proxy', 1);
+
+app.use(rateLimiter({
+    windowMs: 15 * 60 * 1000,
+    max: 60,
+  })
+);
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
