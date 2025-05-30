@@ -8,9 +8,9 @@ export function useRegister() {
   
   const { mutate: registerUser, isPending } = useMutation({
     mutationFn: register,
-    onSuccess: () => {
+    onSuccess: (data) => {
       navigate("/verify-email", { replace: true })
-      toast.success("Verify your email address")
+      toast.success(data.message || "Please verify your email address")
     },
     onError: (error) => {
       toast.error(error.message ||  "There was an error when trying to sign you up")
