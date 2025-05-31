@@ -1,6 +1,6 @@
 import axiosInstance from "./axios"
-import { type LoginResponse, type RegisterResponse, type ResendVerificationCodeResponse, type VerifyEmailResponse } from "./axiosResponseTypes"
-import { LOGIN_ENDPOINT, REGISTER_ENDPOINT, RESEND_VERIFICATION_CODE_ENDPOINT, VERIFY_EMAIL_ENDPOINT } from "./constants"
+import { type forgotPasswordResponse, type LoginResponse, type RegisterResponse, type ResendVerificationCodeResponse, type VerifyEmailResponse } from "./axiosResponseTypes"
+import { FORGOT_PASSWORD_ENDPOINT, LOGIN_ENDPOINT, REGISTER_ENDPOINT, RESEND_VERIFICATION_CODE_ENDPOINT, VERIFY_EMAIL_ENDPOINT } from "./constants"
 import { getErrorMessage } from "./helpers"
 
 export const register = async (credentials: { fullName: string, email: string, password: string, confirmPassword: string }) => {
@@ -36,6 +36,18 @@ export const resendVerificationCode = async (credentials: { email: string }) => 
 export const login = async (credentials: { email: string, password: string }) => {
   try {
     const response = await axiosInstance.post<LoginResponse>(LOGIN_ENDPOINT, credentials) 
+    return response.data
+  } catch (error) {
+    const errorMessage = getErrorMessage(error)
+    throw new Error(errorMessage)
+  }
+}
+
+// logout
+
+export const forgotPassword = async (credentials: { email: string }) => {
+  try {
+    const response = await axiosInstance.post<forgotPasswordResponse>(FORGOT_PASSWORD_ENDPOINT, credentials) 
     return response.data
   } catch (error) {
     const errorMessage = getErrorMessage(error)

@@ -13,7 +13,7 @@ export function useResendVerificationCode() {
       toast.success(data.message || "Verification code resent. Please check your inbox.")
     },
     onError: (error) => {
-      toast.error(error.message ||  "There was an error when trying to resend the verification code")
+      toast.error(error.message || "There was an error when trying to resend the verification code")
     }
   })
   

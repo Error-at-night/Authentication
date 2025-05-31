@@ -24,7 +24,7 @@ function Login() {
       <form className="w-[500px] mx-auto bg-white p-4 pb-6 shadow-md rounded-lg" onSubmit={handleSubmit(onSubmit)}>
         <div className="text-center">
           <h1 className="text-[#2B3445] font-bold text-[2rem]">Login</h1>
-          <p className="text-[#92969F] font-bold text-[1rem]">Please fill all forms to be continued</p>
+          <p className="text-[#92969F] text-[1rem]">Please fill all forms to be continued</p>
         </div>
         <div className="flex flex-col py-4">
           <label htmlFor="email" className="text-[#2B3445] font-semibold mb-2">Email</label>
@@ -75,6 +75,9 @@ function Login() {
           </div>
           {errors.password && <p className="text-red-500 mt-1">{errors.password.message}</p>}
         </div>
+        <div className="text-right">
+          <Link to="/forgot-password" className="underline">Forgot password?</Link>
+        </div>
         <div className="pt-5">
           <button type="submit" className="text-white bg-black px-3 py-3 w-full rounded-md cursor-pointer font-semibold"
             disabled={isPending}
@@ -82,13 +85,14 @@ function Login() {
             {isPending ? <ButtonSpinner/> : "Login"}
           </button>
         </div>
-        <div className="mt-4">
-          <p className="text-center">Don't have any account? <Link to="/register" className="underline font-bold">Register</Link></p>
+        <div className="mt-5">
+          <p className="text-center">Don't have any account? {" "}
+            <Link to="/register" className="underline cursor-pointer font-bold">Register</Link>
+          </p>
         </div>
       </form>
     </main>
   )
-
 }
 
 export default Login

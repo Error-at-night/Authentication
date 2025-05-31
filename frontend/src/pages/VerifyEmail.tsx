@@ -68,7 +68,7 @@ function VerifyEmail() {
       <form className="w-full max-w-[500px] mx-auto bg-white p-4 pb-6 shadow-md rounded-lg" onSubmit={handleSubmit(onSubmit)}>
         <div className="text-center">
           <h1 className="text-[#2B3445] font-bold text-[2rem]">Verify Your Email</h1>
-          <p className="text-[#92969F] font-bold text-[1rem]">Enter the 6-digit code sent to your email address</p>
+          <p className="text-[#92969F] text-[1rem]">Enter the 6-digit code sent to your email address</p>
         </div>
         <input type="hidden"
           {...register("verificationCode", {
@@ -96,9 +96,9 @@ function VerifyEmail() {
             {isPending ? <ButtonSpinner /> : "Verify email"}
           </button>
         </div>
-        <p className="text-center underline mt-5 cursor-pointer">
-          <Link to="/resend-verification-code">Resend verification code</Link>
-        </p>
+        <div className="mt-5 text-center">
+          <Link to="/resend-verification-code" className="underline cursor-pointer">Resend verification code</Link>
+        </div>
       </form>
     </main>
   )

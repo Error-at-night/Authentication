@@ -13,7 +13,7 @@ export function useVerifyEmail() {
       toast.success(data.message || "Email verified")
     },
     onError: (error) => {
-      toast.error(error.message ||  "There was an error when trying to verify your email")
+      toast.error(error.message || "There was an error when trying to verify your email")
     }
   })
   

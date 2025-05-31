@@ -87,7 +87,7 @@ const resendVerificationCode = async (req, res, next) => {
     }
 
     if (user.verificationCodeExpiresAt && user.verificationCodeExpiresAt > now) {
-      return res.status(StatusCodes.OK).json({ message: "A verification code was already sent recently. Please check your inbox." })
+      return res.status(StatusCodes.OK).json({ message: "A verification code was already sent recently. Please check your email." })
     }
 
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
@@ -101,7 +101,7 @@ const resendVerificationCode = async (req, res, next) => {
 
     await resendVerificationCodeEmail({ email: user.email, fullName: user.fullName, verificationCode: user.verificationCode });
 
-    res.status(StatusCodes.OK).json({ message: "Verification code resent. Please check your inbox." });
+    res.status(StatusCodes.OK).json({ message: "Verification code resent. Please check your email." });
   
   } catch(error) {
     next(error)
@@ -223,7 +223,7 @@ const forgotPassword = async (req, res, next) => {
       await user.save()
     }
 
-    res.status(StatusCodes.OK).json({ message: "Please check your email to check for reset password link" })
+    res.status(StatusCodes.OK).json({ message: "Please check your email for the reset password link" })
 
   } catch(error) {
     next(error)

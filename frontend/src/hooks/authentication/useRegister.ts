@@ -13,7 +13,7 @@ export function useRegister() {
       toast.success(data.message || "Please verify your email address")
     },
     onError: (error) => {
-      toast.error(error.message ||  "There was an error when trying to sign you up")
+      toast.error(error.message || "There was an error when trying to sign you up")
     }
   })
   

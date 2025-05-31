@@ -27,7 +27,7 @@ function Register() {
       <form className="w-[500px] mx-auto bg-white p-4 pb-6 shadow-md rounded-lg" onSubmit={handleSubmit(onSubmit)}>
         <div className="text-center">
           <h1 className="text-[#2B3445] font-bold text-[2rem]">Create Your Account</h1>
-          <p className="text-[#92969F] font-bold text-[1rem]">Please fill all forms to be continued</p>
+          <p className="text-[#92969F] text-[1rem]">Please fill all forms to be continued</p>
         </div>
         <div className="flex flex-col mt-5">
           <label htmlFor="name" className="text-[#2B3445] font-semibold mb-2">Full Name</label>
@@ -117,8 +117,10 @@ function Register() {
             {isPending ? <ButtonSpinner/> : "Create Account"}
           </button>
         </div>
-        <div className="mt-4">
-          <p className="text-center">Already have an account? <Link to="/login" className="underline font-bold">Login</Link></p>
+        <div className="mt-5">
+          <p className="text-center">Already have an account? {" "} 
+            <Link to="/login" className="underline cursor-pointer font-bold">Login</Link>
+          </p>
         </div>
       </form>
     </main>

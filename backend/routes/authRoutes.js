@@ -9,7 +9,6 @@ router.post("/register", registerRateLimter, register)
 router.post("/verify-email", verifyEmailRateLimiter, verifyEmail)
 router.post("/resend-verification-code", resendVerificationCodeRateLimiter, resendVerificationCode)
 router.post("/login", loginRateLimiter, login)
-
 router.post("/logout", logout)
 router.post("/forgot-password", forgotPassword)
 

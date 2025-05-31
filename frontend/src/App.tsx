@@ -6,6 +6,8 @@ import Register from './pages/Register'
 import Login from './pages/Login';
 import VerifyEmail from './pages/VerifyEmail';
 import ResendVerificationCode from './pages/ResendVerificationCode';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +25,8 @@ function App() {
           <Route path="verify-email" element={<VerifyEmail/>} />
           <Route path="resend-verification-code" element={<ResendVerificationCode/>} />
           <Route path="login" element={<Login/>} />
+          <Route path="forgot-password" element={<ForgotPassword/>} />
+          <Route path="reset-password/:token" element={<ResetPassword/>} />
         </Routes>
       </BrowserRouter>
       <Toaster

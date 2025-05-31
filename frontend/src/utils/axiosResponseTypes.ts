@@ -18,3 +18,7 @@ export type LoginResponse = {
     email: string;
   };
 };
+
+export type forgotPasswordResponse = {
+  message: string;
+};

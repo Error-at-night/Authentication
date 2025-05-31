@@ -13,7 +13,7 @@ export function useLogin() {
       toast.success(data.message || "Login successful")
     },
     onError: (error) => {
-      toast.error(error.message ||  "There was an error when trying to log you in")
+      toast.error(error.message || "There was an error when trying to log you in")
     }
   })
   
