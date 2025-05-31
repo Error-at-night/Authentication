@@ -2,7 +2,7 @@ const User = require("../models/User")
 const Token = require("../models/Token")
 const CustomError = require("../errors")
 const { StatusCodes } = require("http-status-codes")
-const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, /* sendResetPasswordEmail */ } = require("../utils/index")
+const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, resendVerificationCodeEmail, /* sendResetPasswordEmail */ } = require("../utils/index")
 const crypto = require('crypto');
 
 const register = async (req, res, next) => {
@@ -99,7 +99,7 @@ const resendVerificationCode = async (req, res, next) => {
 
     await user.save()
 
-    await sendVerificationEmail({ email: user.email, fullName: user.fullName, verificationCode: user.verificationCode });
+    await resendVerificationCodeEmail({ email: user.email, fullName: user.fullName, verificationCode: user.verificationCode });
 
     res.status(StatusCodes.OK).json({ message: "Verification code resent. Please check your inbox." });
   
