@@ -53,7 +53,7 @@ const verifyEmail = async (req, res, next) => {
     }
 
     if (user.verificationCodeExpiresAt && user.verificationCodeExpiresAt < Date.now()) {
-      throw new CustomError.BadRequestError("Expired verification code");
+      throw new CustomError.BadRequestError("This verification code has expired");
     }
 
     user.isVerified = true;
@@ -79,14 +79,6 @@ const resendVerificationCode = async (req, res, next) => {
     }
 
     const user = await User.findOne({ email })
-
-    // if(!user) {
-    //   throw new CustomError.BadRequestError("Invalid email")
-    // }
-
-    // if(user.isVerified) {
-    //   throw new CustomError.BadRequestError("Email is already verified")
-    // }
 
     const now = Date.now();
 
@@ -123,7 +115,7 @@ const login = async (req, res, next) => {
    try {
 
     if(!email || !password) {
-      throw new CustomError.BadRequestError("Please provide email and password")
+      throw new CustomError.BadRequestError("Please your provide email and password")
     }
 
     const user = await User.findOne({ email })
