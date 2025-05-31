@@ -3,7 +3,7 @@ const createTokenUser = require('./createTokenUser');
 // const checkPermissions = require('./checkPermissions');
 const sendVerificationEmail = require("./sendVerificationEmail");
 const resendVerificationCodeEmail = require('./resendVerificationCodeEmail');
-// const sendResetPasswordEmail = require("./sendResetPasswordEmail")
+const sendResetPasswordEmail = require("./sendResetPasswordEmail")
 
 module.exports = {
   createJWT,
@@ -12,6 +12,6 @@ module.exports = {
   createTokenUser,
   // checkPermissions,
   sendVerificationEmail,
-  resendVerificationCodeEmail
-  // sendResetPasswordEmail
+  resendVerificationCodeEmail,
+  sendResetPasswordEmail
 };

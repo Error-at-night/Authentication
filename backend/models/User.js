@@ -58,7 +58,13 @@ const UserSchema = new mongoose.Schema({
   lastVerificationEmailSentAt: {
     type: Date,
     default: null,
-  }
+  },
+  passwordToken: {
+    type: String,
+  },
+  passwordTokenExpirationDate: {
+    type: Date,
+  },
 
 }, { timestamps: true })
 

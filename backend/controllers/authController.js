@@ -2,7 +2,7 @@ const User = require("../models/User")
 const Token = require("../models/Token")
 const CustomError = require("../errors")
 const { StatusCodes } = require("http-status-codes")
-const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, resendVerificationCodeEmail, /* sendResetPasswordEmail */ } = require("../utils/index")
+const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, resendVerificationCodeEmail, sendResetPasswordEmail } = require("../utils/index")
 const crypto = require('crypto');
 
 const register = async (req, res, next) => {
@@ -195,8 +195,39 @@ const logout = async (req, res, next) => {
   }
 }
 
-const forgotPassword = (req, res) => {
+const forgotPassword = async (req, res, next) => {
+  const { email } = req.body
 
+  try {
+
+    if(!email) {
+      throw new CustomError.BadRequestError("Please provide your email")
+    }
+
+    const user = await User.findOne({ email })
+
+    if(user) {
+      const origin = "https://localhost:5173"
+
+      const passwordToken = crypto.randomBytes(70).toString("hex")
+
+      await sendResetPasswordEmail({ name: user.name, email: user.email, token: passwordToken, origin })
+
+      const tenMinutes = 1000 * 60 * 10
+
+      const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes)
+
+      user.passwordToken = passwordToken
+      user.passwordTokenExpirationDate = passwordTokenExpirationDate
+
+      await user.save()
+    }
+
+    res.status(StatusCodes.OK).json({ message: "Please check your email to check for reset password link" })
+
+  } catch(error) {
+    next(error)
+  }
 }
 
 const resetPassword = (req, res) => {
