@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from 'lucide-react';
 import { useLogin } from '../hooks/authentication/useLogin';
 import ButtonSpinner from "../components/ButtonSpinner";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -80,6 +81,9 @@ function Login() {
           >
             {isPending ? <ButtonSpinner/> : "Login"}
           </button>
+        </div>
+        <div className="mt-4">
+          <p className="text-center">Don't have any account? <Link to="/register" className="underline font-bold">Register</Link></p>
         </div>
       </form>
     </main>
