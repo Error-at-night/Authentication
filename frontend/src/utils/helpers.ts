@@ -6,7 +6,7 @@ export function getErrorMessage(error: unknown): string {
         case 400:
           return error.response.data?.message || "Invalid request. Please verify your data and try again.";
         case 401:
-          return error.response.data?.message || "Authentication required. Please sign in.";
+          return error.response.data?.message || "Authentication required. Please login in.";
         case 403:
           return error.response.data?.message || "Access denied. You don’t have permission to perform this action.";
         case 404:

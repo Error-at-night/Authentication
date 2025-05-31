@@ -17,6 +17,10 @@ function ResendVerificationCode() {
   return (
     <main className="bg-[#F8F9FA] h-[100vh] flex items-center px-4">
       <form className="w-[500px] mx-auto bg-white p-4 pb-6 shadow-md rounded-lg" onSubmit={handleSubmit(onSubmit)}>
+        <div className="text-center">
+          <h1 className="text-[#2B3445] font-bold text-[2rem]">Resend Verification Code</h1>
+          <p className="text-[#92969F] font-bold text-[1rem]">Provide the email address you used during registration</p>
+        </div>
         <div className="flex flex-col pt-4">
           <label htmlFor="email" className="text-[#2B3445] font-semibold mb-2">Email</label>
           <input type="email" id="email" 

@@ -17,15 +17,7 @@ function VerifyEmail() {
     const newCode = [...code]
 
     if (value.length > 1) {
-      const pastedCode = value.slice(0, 6).split("")
-      for (let i = 0; i < 6; i++) {
-        newCode[i] = pastedCode[i] || ""
-      }
-      setCode(newCode)
-
-      const lastFilledIndex = newCode.findLastIndex((digit) => digit !== "")
-      const focusIndex = lastFilledIndex < 5 ? lastFilledIndex + 1 : 5
-      inputRefs.current[focusIndex]?.focus()
+      return
     } else {
       newCode[index] = value
       setCode(newCode)
@@ -33,7 +25,23 @@ function VerifyEmail() {
         inputRefs.current[index + 1]?.focus()
       }
     }
-  };
+  }
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    const pasteData = e.clipboardData.getData('text').slice(0, 6)
+    const pasteArray = pasteData.split('')
+
+    const newCode = [...code]
+    for (let i = 0; i < 6; i++) {
+      newCode[i] = pasteArray[i] || ""
+    }
+    setCode(newCode)
+
+    const lastFilledIndex = newCode.findLastIndex(d => d !== "")
+    const focusIndex = lastFilledIndex < 5 ? lastFilledIndex + 1 : 5
+    inputRefs.current[focusIndex]?.focus()
+  }
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace" && !code[index] && index > 0) {
@@ -52,15 +60,15 @@ function VerifyEmail() {
 
   useEffect(() => {
     const codeString = code.join("");
-    setValue("verificationCode", codeString);
-  }, [code, setValue]);
+    setValue("verificationCode", codeString)
+  }, [code, setValue])
 
   return (
     <main className="bg-[#F8F9FA] h-screen flex items-center px-4">
       <form className="w-full max-w-[500px] mx-auto bg-white p-4 pb-6 shadow-md rounded-lg" onSubmit={handleSubmit(onSubmit)}>
         <div className="text-center">
           <h1 className="text-[#2B3445] font-bold text-[2rem]">Verify Your Email</h1>
-          <p className="text-[#92969F] font-bold text-[1rem]">Enter the 6-digit code sent to your email address.</p>
+          <p className="text-[#92969F] font-bold text-[1rem]">Enter the 6-digit code sent to your email address</p>
         </div>
         <input type="hidden"
           {...register("verificationCode", {
@@ -73,6 +81,7 @@ function VerifyEmail() {
             <input key={index} type="text" value={digit} maxLength={1}
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
+              onPaste={handlePaste}
               ref={(el) => {inputRefs.current[index] = el}}
               className={`${errors.verificationCode? "border-red-500 focus:border-red-500 focus:outline-none": 
                 "border-[#DAE1E7]"} border w-12 h-12 text-center text-xl mx-1 rounded-md`}

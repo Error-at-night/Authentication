@@ -1,8 +1,12 @@
 export type RegisterResponse = {
-    message: string;
+  message: string;
 }
 
 export type VerifyEmailResponse = {
+  message: string
+}
+
+export type ResendVerificationCodeResponse = {
   message: string
 }
 

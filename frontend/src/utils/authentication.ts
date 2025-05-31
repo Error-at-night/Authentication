@@ -1,5 +1,5 @@
 import axiosInstance from "./axios"
-import { type LoginResponse, type RegisterResponse, type VerifyEmailResponse } from "./axiosResponseTypes"
+import { type LoginResponse, type RegisterResponse, type ResendVerificationCodeResponse, type VerifyEmailResponse } from "./axiosResponseTypes"
 import { LOGIN_ENDPOINT, REGISTER_ENDPOINT, RESEND_VERIFICATION_CODE_ENDPOINT, VERIFY_EMAIL_ENDPOINT } from "./constants"
 import { getErrorMessage } from "./helpers"
 
@@ -8,8 +8,8 @@ export const register = async (credentials: { fullName: string, email: string, p
     const response = await axiosInstance.post<RegisterResponse>(REGISTER_ENDPOINT, credentials) 
     return response.data
   } catch (error) {
-    const errorMessage = getErrorMessage(error);
-    throw new Error(errorMessage);
+    const errorMessage = getErrorMessage(error)
+    throw new Error(errorMessage)
   }
 }
 
@@ -18,18 +18,18 @@ export const verifyEmail = async (credentials: { verificationCode: string }) => 
     const response = await axiosInstance.post<VerifyEmailResponse>(VERIFY_EMAIL_ENDPOINT, credentials) 
     return response.data
   } catch (error) {
-    const errorMessage = getErrorMessage(error);
-    throw new Error(errorMessage);
+    const errorMessage = getErrorMessage(error)
+    throw new Error(errorMessage)
   }
 }
 
 export const resendVerificationCode = async (credentials: { email: string }) => {
   try {
-    const response = await axiosInstance.post<VerifyEmailResponse>(RESEND_VERIFICATION_CODE_ENDPOINT, credentials) 
+    const response = await axiosInstance.post<ResendVerificationCodeResponse>(RESEND_VERIFICATION_CODE_ENDPOINT, credentials) 
     return response.data
   } catch (error) {
-    const errorMessage = getErrorMessage(error);
-    throw new Error(errorMessage);
+    const errorMessage = getErrorMessage(error)
+    throw new Error(errorMessage)
   }
 }
 
@@ -38,8 +38,8 @@ export const login = async (credentials: { email: string, password: string }) =>
     const response = await axiosInstance.post<LoginResponse>(LOGIN_ENDPOINT, credentials) 
     return response.data
   } catch (error) {
-    const errorMessage = getErrorMessage(error);
-    throw new Error(errorMessage);
+    const errorMessage = getErrorMessage(error)
+    throw new Error(errorMessage)
   }
 }
 
