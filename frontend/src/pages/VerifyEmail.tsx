@@ -96,7 +96,7 @@ function VerifyEmail() {
             {isPending ? <ButtonSpinner /> : "Verify email"}
           </button>
         </div>
-        <p className="text-center underline mt-3 cursor-pointer">
+        <p className="text-center underline mt-5 cursor-pointer">
           <Link to="/resend-verification-code">Resend verification code</Link>
         </p>
       </form>
