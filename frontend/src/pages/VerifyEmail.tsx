@@ -3,6 +3,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import type { VerifyEmailFormData } from "../utils/types";
 import { useVerifyEmail } from "../hooks/authentication/useVerifyEmail";
 import ButtonSpinner from "../components/ButtonSpinner";
+import { Link } from "react-router-dom";
 
 function VerifyEmail() {
   const [code, setCode] = useState<string[]>(["", "", "", "", "", ""])
@@ -83,11 +84,15 @@ function VerifyEmail() {
           <button type="submit" className="text-white bg-black px-3 py-3 w-full rounded-md cursor-pointer font-semibold"
             disabled={isPending}
           >
-            {isPending ? <ButtonSpinner /> : "Verify Email"}
+            {isPending ? <ButtonSpinner /> : "Verify email"}
           </button>
         </div>
+        <p className="text-center underline mt-3 cursor-pointer">
+          <Link to="/resend-verification-code">Resend verification code</Link>
+        </p>
       </form>
     </main>
   )
 }
+
 export default VerifyEmail

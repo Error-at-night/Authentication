@@ -48,7 +48,7 @@ const verifyEmail = async (req, res, next) => {
       throw new CustomError.BadRequestError("Invalid verification code");
     }
 
-    if (user.verificationCodeExpiresAt < Date.now()) {
+    if (user.verificationCodeExpiresAt && user.verificationCodeExpiresAt < Date.now()) {
       throw new CustomError.BadRequestError("Expired verification code");
     }
 
@@ -90,7 +90,7 @@ const resendVerificationCode = async (req, res, next) => {
       throw new CustomError.TooManyRequestsError("Please wait at least 1 minute before requesting another code.");
     }
 
-    if (user.verificationCodeExpiresAt > now) {
+    if (user.verificationCodeExpiresAt && user.verificationCodeExpiresAt > now) {
       return res.status(StatusCodes.OK).json({ message: "A verification code was already sent recently. Please check your inbox." })
     }
 

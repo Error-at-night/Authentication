@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Register from './pages/Register'
 import Login from './pages/Login';
 import VerifyEmail from './pages/VerifyEmail';
+import ResendVerificationCode from './pages/ResendVerificationCode';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route path="register" element={<Register/>} />
           <Route path="verify-email" element={<VerifyEmail/>} />
+          <Route path="resend-verification-code" element={<ResendVerificationCode/>} />
           <Route path="login" element={<Login/>} />
         </Routes>
       </BrowserRouter>

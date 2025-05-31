@@ -9,6 +9,10 @@ export type VerifyEmailFormData = {
   verificationCode: string
 }
 
+export type ResendVerificationCodeFormData = {
+  email: string
+}
+
 export type LoginFormData = {
   email:  string,
   password: string,
