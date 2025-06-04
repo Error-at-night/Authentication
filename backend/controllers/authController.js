@@ -2,7 +2,7 @@ const User = require("../models/User")
 const Token = require("../models/Token")
 const CustomError = require("../errors")
 const { StatusCodes } = require("http-status-codes")
-const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, resendVerificationCodeEmail, sendResetPasswordEmail } = require("../utils/index")
+const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, resendVerificationCodeEmail, sendResetPasswordEmail, createHash, resetPasswordSuccessEmail } = require("../utils/index")
 const crypto = require('crypto');
 
 const register = async (req, res, next) => {
@@ -15,7 +15,7 @@ const register = async (req, res, next) => {
     }
 
     if(password !== confirmPassword) {
-      throw new CustomError.BadRequestError("Passwords does not match")
+      throw new CustomError.BadRequestError("Passwords do not match")
     }
 
     const emailAlreadyExists = await User.findOne({ email })
@@ -39,33 +39,33 @@ const register = async (req, res, next) => {
 }
 
 const verifyEmail = async (req, res, next) => {
-  const { verificationCode } = req.body;
+  const { verificationCode } = req.body
 
   try {
-    const user = await User.findOne({ verificationCode });
+    const user = await User.findOne({ verificationCode })
 
-    if (!user) {
-      throw new CustomError.BadRequestError("Invalid verification code");
+    if(!user) {
+      throw new CustomError.BadRequestError("Invalid verification code")
     }
 
-    if (user.isVerified) {
-      throw new CustomError.BadRequestError("Email is already verified");
+    if(user.isVerified) {
+      throw new CustomError.BadRequestError("Email is already verified")
     }
 
-    if (user.verificationCodeExpiresAt && user.verificationCodeExpiresAt < Date.now()) {
-      throw new CustomError.BadRequestError("This verification code has expired");
+    if(user.verificationCodeExpiresAt && user.verificationCodeExpiresAt < Date.now()) {
+      throw new CustomError.BadRequestError("This verification code has expired")
     }
 
-    user.isVerified = true;
-    user.verified = Date.now();
-    user.verificationCode = "";
-    user.verificationCodeExpiresAt = null;
+    user.isVerified = true
+    user.verified = Date.now()
+    user.verificationCode = ""
+    user.verificationCodeExpiresAt = null
 
-    await user.save();
+    await user.save()
 
-    res.status(StatusCodes.OK).json({ message: "Email verified" });
+    res.status(StatusCodes.OK).json({ message: "Email verified" })
   } catch (error) {
-    next(error);
+    next(error)
   }
 }
 
@@ -80,13 +80,21 @@ const resendVerificationCode = async (req, res, next) => {
 
     const user = await User.findOne({ email })
 
-    const now = Date.now();
-
-    if (user.lastVerificationEmailSentAt && (now - user.lastVerificationEmailSentAt.getTime() < 60 * 1000)) {
-      throw new CustomError.TooManyRequestsError("Please wait at least 1 minute before requesting another code.");
+    if(!user) {
+      throw new CustomError.NotFoundError("No user found with this email")
     }
 
-    if (user.verificationCodeExpiresAt && user.verificationCodeExpiresAt > now) {
+    if(user.isVerified) {
+      throw new CustomError.BadRequestError("Email is already verified")
+    }
+
+    const now = Date.now()
+
+    if(user.lastVerificationEmailSentAt && (now - user.lastVerificationEmailSentAt.getTime() < 60 * 1000)) {
+      throw new CustomError.TooManyRequestsError("Please wait at least 1 minute before requesting another code.")
+    }
+
+    if(user.verificationCodeExpiresAt && user.verificationCodeExpiresAt > now) {
       return res.status(StatusCodes.OK).json({ message: "A verification code was already sent recently. Please check your email." })
     }
 
@@ -95,13 +103,13 @@ const resendVerificationCode = async (req, res, next) => {
 
     user.verificationCode = verificationCode
     user.verificationCodeExpiresAt = verificationCodeExpiresAt
-    user.lastVerificationEmailSentAt = new Date(now);
+    user.lastVerificationEmailSentAt = new Date(now)
 
     await user.save()
 
-    await resendVerificationCodeEmail({ email: user.email, fullName: user.fullName, verificationCode: user.verificationCode });
+    await resendVerificationCodeEmail({ email: user.email, fullName: user.fullName, verificationCode: user.verificationCode })
 
-    res.status(StatusCodes.OK).json({ message: "Verification code resent. Please check your email." });
+    res.status(StatusCodes.OK).json({ message: "Verification code resent. Please check your email." })
   
   } catch(error) {
     next(error)
@@ -109,7 +117,6 @@ const resendVerificationCode = async (req, res, next) => {
 }
 
 const login = async (req, res, next) => {
-
   const { email, password } = req.body
   
    try {
@@ -144,11 +151,11 @@ const login = async (req, res, next) => {
       const { isValid } = existingToken
 
       if(!isValid) {
-        throw new CustomError.UnauthenticatedError('Invalid Credentials');
+        throw new CustomError.UnauthenticatedError('Invalid Credentials')
       }
       
       refreshToken = existingToken.refreshToken
-      attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+      attachCookiesToResponse({ res, user: tokenUser, refreshToken })
       res.status(StatusCodes.OK).json({ user: tokenUser });
       return;
     }
@@ -207,31 +214,69 @@ const forgotPassword = async (req, res, next) => {
     const user = await User.findOne({ email })
 
     if(user) {
-      const origin = "https://localhost:5173"
+      const origin = "http://localhost:5173"
 
       const passwordToken = crypto.randomBytes(70).toString("hex")
-
-      await sendResetPasswordEmail({ name: user.name, email: user.email, token: passwordToken, origin })
 
       const tenMinutes = 1000 * 60 * 10
 
       const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes)
 
-      user.passwordToken = passwordToken
+      user.passwordToken = createHash(passwordToken)
       user.passwordTokenExpirationDate = passwordTokenExpirationDate
 
       await user.save()
+
+      await sendResetPasswordEmail({ fullName: user.fullName, email: user.email, token: passwordToken, origin })
     }
 
-    res.status(StatusCodes.OK).json({ message: "Please check your email for the reset password link" })
+    res.status(StatusCodes.OK).json({ message: "Please check your email for reset password link" })
 
   } catch(error) {
     next(error)
   }
 }
 
-const resetPassword = (req, res) => {
+const resetPassword = async (req, res, next) => {
+  const { token } = req.params
+  const { password, confirmPassword } = req.body
 
+  try {
+    if (!password) {
+      throw new CustomError.BadRequestError("Please provide a new password")
+    }
+
+    if(!confirmPassword) {
+      throw new CustomError.BadRequestError("Please confirm your new password")
+    }
+
+    if(password !== confirmPassword) {
+      throw new CustomError.BadRequestError("Passwords do not match")
+    }
+
+    const hashedToken = createHash(token)
+    
+    const user = await User.findOne({
+      passwordToken: hashedToken,
+      passwordTokenExpirationDate: { $gt: new Date() } 
+    })
+
+    if(!user) {
+      throw new CustomError.UnauthenticatedError("Invalid or expired reset token")
+    }
+    
+    user.password = password
+    user.passwordToken = null
+    user.passwordTokenExpirationDate = null
+    await user.save()
+
+    await resetPasswordSuccessEmail({ fullName: user.fullName, email: user.email })
+
+    res.status(StatusCodes.OK).json({ message: "Password reset successful" })
+
+  } catch(error) {
+    next(error)
+  }
 }
 
 module.exports = {

@@ -22,3 +22,7 @@ export type LoginResponse = {
 export type forgotPasswordResponse = {
   message: string;
 };
+
+export type resetPasswordResponse = {
+  message: string;
+};

@@ -21,3 +21,9 @@ export type LoginFormData = {
 export type ForgotPasswordFormData = {
   email: string
 }
+
+export type ResetPasswordFormData = {
+  password: string,
+  confirmPassword: string,
+  token: string
+}

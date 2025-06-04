@@ -40,18 +40,18 @@ function ForgotPassword() {
               {...register("email", {
                 required: "Please provide your email",
                 validate: (value) => {
-                  const emailPattern = /^[\w.-]+@gmail\.com$/i;
+                  const emailPattern = /^[\w.-]+@gmail\.com$/i
 
                   if (!emailPattern.test(value)) {
-                    return "Please provide a valid email address (eg johndoe@gmail.com)";
+                    return "Please provide a valid email address (eg johndoe@gmail.com)"
                   }
 
                   const firstPart = value.split("@")[0];
                   if (firstPart.length < 5) {
-                    return "The name before '@' must be at least 5 characters long";
+                    return "The name before '@' must be at least 5 characters long"
                   }
 
-                  return true;
+                  return true
                 },
               })}
               disabled={isPending}
@@ -62,7 +62,7 @@ function ForgotPassword() {
             <button type="submit" className="text-white bg-black px-3 py-3 w-full rounded-md cursor-pointer font-semibold"
               disabled={isPending}
             >
-              {isPending ? <ButtonSpinner/> : "Send reset link"}
+              {isPending ? <ButtonSpinner/> : "Send Reset Password Link"}
             </button>
           </div>
           <div className="mt-5">

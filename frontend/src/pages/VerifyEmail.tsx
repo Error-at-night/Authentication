@@ -50,8 +50,7 @@ function VerifyEmail() {
   }
 
   const onSubmit: SubmitHandler<VerifyEmailFormData> = (data) => {
-    verifyUserEmail(data, {
-      onSettled: () => {
+    verifyUserEmail(data, { onSettled: () => {
         reset()
         setCode(["", "", "", "", "", ""])
       },
@@ -93,7 +92,7 @@ function VerifyEmail() {
           <button type="submit" className="text-white bg-black px-3 py-3 w-full rounded-md cursor-pointer font-semibold"
             disabled={isPending}
           >
-            {isPending ? <ButtonSpinner /> : "Verify email"}
+            {isPending ? <ButtonSpinner /> : "Verify Email"}
           </button>
         </div>
         <div className="mt-5 text-center">
