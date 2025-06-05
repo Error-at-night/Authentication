@@ -230,7 +230,7 @@ const forgotPassword = async (req, res, next) => {
       await sendResetPasswordEmail({ fullName: user.fullName, email: user.email, token: passwordToken, origin })
     }
 
-    res.status(StatusCodes.OK).json({ message: "Please check your email for reset password link" })
+    res.status(StatusCodes.OK).json({ message: "Please check your email for the reset password link" })
 
   } catch(error) {
     next(error)
@@ -262,7 +262,7 @@ const resetPassword = async (req, res, next) => {
     })
 
     if(!user) {
-      throw new CustomError.UnauthenticatedError("Invalid or expired reset token")
+      throw new CustomError.UnauthenticatedError("Invalid or expired link")
     }
     
     user.password = password
