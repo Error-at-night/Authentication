@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { VerifyEmailFormData } from "../utils/types";
-import { useVerifyEmail } from "../hooks/authentication/useVerifyEmail";
-import ButtonSpinner from "../components/ButtonSpinner";
+import type { VerifyEmailFormData } from "../../utils/types";
+import { useVerifyEmail } from "../../hooks/authentication/useVerifyEmail";
+import ButtonSpinner from "../../components/ButtonSpinner";
 import { Link } from "react-router-dom";
 
 function VerifyEmail() {

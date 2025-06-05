@@ -9,8 +9,8 @@ export function useResendVerificationCode() {
   const { mutate: resendUserVerificationCode, isPending } = useMutation({
     mutationFn: resendVerificationCode,
     onSuccess: (data) => {
-      navigate("/verify-email", { replace: true })
       toast.success(data.message || "Verification code resent. Please check your inbox.")
+      navigate("/verify-email", { replace: true })
     },
     onError: (error) => {
       toast.error(error.message || "There was an error when trying to resend the verification code")

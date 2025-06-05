@@ -1,9 +1,9 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useResetPassword } from "../hooks/authentication/useResetPassword"
-import type { ResetPasswordFormData } from "../utils/types";
+import { useResetPassword } from "../../hooks/authentication/useResetPassword"; 
+import type { ResetPasswordFormData } from "../../utils/types";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import ButtonSpinner from "../components/ButtonSpinner";
+import ButtonSpinner from "../../components/ButtonSpinner";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 

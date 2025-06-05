@@ -1,7 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { ResendVerificationCodeFormData } from "../utils/types";
-import ButtonSpinner from "../components/ButtonSpinner";
-import { useResendVerificationCode } from "../hooks/authentication/useResendVerificationCode";
+import type { ResendVerificationCodeFormData } from "../../utils/types";
+import ButtonSpinner from "../../components/ButtonSpinner";
+import { useResendVerificationCode } from "../../hooks/authentication/useResendVerificationCode";
 
 function ResendVerificationCode() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<ResendVerificationCodeFormData>();

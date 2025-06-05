@@ -2,12 +2,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 
-import Register from './pages/Register'
-import Login from './pages/Login';
-import VerifyEmail from './pages/VerifyEmail';
-import ResendVerificationCode from './pages/ResendVerificationCode';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
+import Register from './pages/authentication/Register'
+import Login from './pages/authentication/Login';
+import VerifyEmail from './pages/authentication/VerifyEmail';
+import ResendVerificationCode from './pages/authentication/ResendVerificationCode';
+import ForgotPassword from './pages/authentication/ForgotPassword';
+import ResetPassword from './pages/authentication/ResetPassword';
+import Dashboard from './pages/Dashboard';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,12 +16,14 @@ const queryClient = new QueryClient({
       staleTime: 0,
     },
   },
-});
+})
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
+          <Route path="dashboard" element={<Dashboard/>} />
           <Route path="register" element={<Register/>} />
           <Route path="verify-email" element={<VerifyEmail/>} />
           <Route path="resend-verification-code" element={<ResendVerificationCode/>} />

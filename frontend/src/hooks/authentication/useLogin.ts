@@ -9,8 +9,8 @@ export function useLogin() {
   const { mutate: loginUser, isPending } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      navigate("/dashboard", { replace: true })
       toast.success(data.message || "Login successful")
+      navigate("/dashboard", { replace: true })
     },
     onError: (error) => {
       toast.error(error.message || "There was an error when trying to log you in")

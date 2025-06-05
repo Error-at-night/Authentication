@@ -1,15 +1,19 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { ForgotPasswordFormData } from "../utils/types";
-import { useForgotPassword } from "../hooks/authentication/useForgotPassword";
-import ButtonSpinner from "../components/ButtonSpinner";
+import type { ForgotPasswordFormData } from "../../utils/types";
+import { useForgotPassword } from "../../hooks/authentication/useForgotPassword";
+import ButtonSpinner from "../../components/ButtonSpinner";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 function ForgotPassword() {
+  const [emailSubmitted, setEmailSubmitted] = useState("")
+
   const { register, handleSubmit, formState: { errors }, reset } = useForm<ForgotPasswordFormData>();
   
   const { sendForgotPassword, isPending, emailSent } = useForgotPassword()
   
   const onSubmit: SubmitHandler<ForgotPasswordFormData> = (data) => {
+    setEmailSubmitted(data.email)
     sendForgotPassword(data, { onSettled: () => {
       reset()
     }})
@@ -20,7 +24,7 @@ function ForgotPassword() {
       {emailSent ? 
         <div className="text-center w-[500px] mx-auto bg-white p-4 pb-6 shadow-md rounded-lg">
           <h1 className="text-[#2B3445] font-bold text-[2rem]">Forgot Password</h1>
-          <p className="text-[1rem]">If an account exists, you will receive an email to reset your password</p>
+          <p className="text-[1rem]">If an account exists for {emailSubmitted}, you will receive an email to reset your password</p>
           <div className="mt-5">
             <p className="text-center">Back to {" "}
               <Link to="/login" className="underline cursor-pointer font-bold">Login</Link>

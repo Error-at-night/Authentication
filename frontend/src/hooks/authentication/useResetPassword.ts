@@ -9,8 +9,8 @@ export function useResetPassword() {
   const { mutate: resetUserPassword, isPending } = useMutation({
     mutationFn: resetPassword,
     onSuccess: (data) => {
-      navigate("/login", { replace: true })
       toast.success(data.message || "Password reset successful")
+      navigate("/login", { replace: true })
     },
     onError: (error) => {
       toast.error(error.message || "There was an error when trying to reset your password")

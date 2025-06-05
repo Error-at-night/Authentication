@@ -16,13 +16,17 @@ export type LoginResponse = {
     fullName: string;
     userId: string;
     email: string;
-  };
+  }
+}
+
+export type LogoutResponse = {
+  message: string;
 };
 
 export type forgotPasswordResponse = {
   message: string;
-};
+}
 
 export type resetPasswordResponse = {
   message: string;
-};
+}
