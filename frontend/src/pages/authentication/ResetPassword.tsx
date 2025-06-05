@@ -21,7 +21,7 @@ function ResetPassword() {
 
   const onSubmit: SubmitHandler<ResetPasswordFormData> = (data) => {
     if (!token) {
-      toast.error("Token is missing")
+      toast.error("Invalid or missing link")
       return
     }
 
