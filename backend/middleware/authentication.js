@@ -1,5 +1,5 @@
 const CustomError = require('../errors');
-const { isTokenValid } = require('../utils');
+const { isTokenValid, createHash } = require('../utils');
 const Token = require('../models/Token');
 const { attachCookiesToResponse } = require('../utils');
 
@@ -14,9 +14,11 @@ const authenticateUser = async (req, res, next) => {
     }
     const payload = isTokenValid(refreshToken);
 
+    const hashedRefreshToken = createHash(refreshToken)
+
     const existingToken = await Token.findOne({
       user: payload.user.userId,
-      refreshToken: payload.refreshToken,
+      refreshToken: hashedRefreshToken,
     });
 
     if (!existingToken || !existingToken?.isValid) {

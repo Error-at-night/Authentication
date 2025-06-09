@@ -91,11 +91,11 @@ const resendVerificationCode = async (req, res, next) => {
     const now = Date.now()
 
     if(user.lastVerificationEmailSentAt && (now - user.lastVerificationEmailSentAt.getTime() < 60 * 1000)) {
-      throw new CustomError.TooManyRequestsError("Please wait at least 1 minute before requesting another code.")
+      throw new CustomError.TooManyRequestsError("A verification code has already been sent, please check your email")
     }
 
     if(user.verificationCodeExpiresAt && user.verificationCodeExpiresAt > now) {
-      return res.status(StatusCodes.OK).json({ message: "A verification code was already sent recently. Please check your email." })
+      return res.status(StatusCodes.OK).json({ message: "A verification code was already sent recently, please check your email." })
     }
 
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
@@ -109,7 +109,7 @@ const resendVerificationCode = async (req, res, next) => {
 
     await resendVerificationCodeEmail({ email: user.email, fullName: user.fullName, verificationCode: user.verificationCode })
 
-    res.status(StatusCodes.OK).json({ message: "Verification code resent. Please check your email." })
+    res.status(StatusCodes.OK).json({ message: "Verification code resent, please check your email." })
   
   } catch(error) {
     next(error)
@@ -164,8 +164,10 @@ const login = async (req, res, next) => {
     const userAgent = req.headers["user-agent"]
     const ip = req.ip
 
+    const hashedRefreshToken = createHash(refreshToken)
+
     const userToken = {
-      refreshToken, 
+      hashedRefreshToken, 
       userAgent, 
       ip, 
       user: user._id
