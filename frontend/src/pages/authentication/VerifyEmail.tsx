@@ -96,7 +96,7 @@ function VerifyEmail() {
           </button>
         </div>
         <div className="mt-5 text-center">
-          <Link to="/resend-verification-code" className="underline cursor-pointer">Resend verification code</Link>
+          <p>Didn't get a code {" "}<Link to="/resend-verification-code" className="underline cursor-pointer">Resend verification code</Link></p>
         </div>
       </form>
     </main>

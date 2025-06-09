@@ -1,7 +1,7 @@
 const rateLimit = require("express-rate-limit")
 const { StatusCodes } = require("http-status-codes")
 
-const registerRateLimter = rateLimit({
+const registerRateLimit = rateLimit({
   windows: 10 * 60 * 1000,
   keyGenerator: (req) => req.body.email || req.ip,
   max: 3,
@@ -13,7 +13,7 @@ const registerRateLimter = rateLimit({
   },
 })
 
-const verifyEmailRateLimiter = rateLimit({
+const verifyEmailRateLimit = rateLimit({
   windows: 10 * 60 * 1000,
   keyGenerator: (req) => req.body.email || req.ip,
   max: 5,
@@ -25,7 +25,7 @@ const verifyEmailRateLimiter = rateLimit({
   },
 })
 
-const resendVerificationCodeRateLimiter = rateLimit({
+const resendVerificationCodeRateLimit = rateLimit({
   windows: 60 * 1000,
   max: 3,
   keyGenerator: (req) => req.body.email || req.ip,
@@ -37,7 +37,7 @@ const resendVerificationCodeRateLimiter = rateLimit({
   },
 })
 
-const loginRateLimiter = rateLimit({
+const loginRateLimit = rateLimit({
   windows: 10 * 60 * 1000,
   max: 5,
   keyGenerator: (req) => req.body.email || req.ip,
@@ -50,8 +50,8 @@ const loginRateLimiter = rateLimit({
 })
 
 module.exports = {
-  registerRateLimter,
-  verifyEmailRateLimiter,
-  resendVerificationCodeRateLimiter,
-  loginRateLimiter
+  registerRateLimit,
+  verifyEmailRateLimit,
+  resendVerificationCodeRateLimit,
+  loginRateLimit
 }
