@@ -25,10 +25,22 @@ const authenticateUser = async (req, res, next) => {
       throw new CustomError.UnauthenticatedError('Authentication Invalid');
     }
 
+    const newRefreshToken = crypto.randomBytes(40).toString("hex")
+    const newHashedRefreshToken = createHash(newRefreshToken)
+
+    await existingToken.deleteOne()
+
+    await Token.create({
+      refreshToken: newHashedRefreshToken,
+      user: payload.user.userId,
+      userAgent: req.headers['user-agent'],
+      ip: req.ip,
+    })
+
     attachCookiesToResponse({
       res,
       user: payload.user,
-      refreshToken: existingToken.refreshToken,
+      refreshToken: newRefreshToken,
     });
 
     req.user = payload.user;
