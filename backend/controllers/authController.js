@@ -167,7 +167,7 @@ const login = async (req, res, next) => {
     const hashedRefreshToken = createHash(refreshToken)
 
     const userToken = {
-      hashedRefreshToken, 
+     refreshToken: hashedRefreshToken, 
       userAgent, 
       ip, 
       user: user._id
