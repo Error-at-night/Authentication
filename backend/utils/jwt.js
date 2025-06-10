@@ -14,6 +14,10 @@ const attachCookiesToResponse = ({ res, user, refreshToken }) => {
   const oneHour = 1000 * 60 * 60
   const sevenDays = 1000 * 60 * 60 * 24 * 7
 
+  // for testing
+  // const oneHour = 1000 * 60 
+  // const sevenDays = 1000 * 60 * 5
+
   res.cookie('accessToken', accessTokenJWT, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',

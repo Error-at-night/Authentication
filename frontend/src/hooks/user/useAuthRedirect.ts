@@ -6,8 +6,6 @@ export function useAuthRedirect() {
   const { currentUser, isPending, error } = useGetCurrentUser()
   const navigate = useNavigate()
 
-  console.log(currentUser)
-
   useEffect(() => {
     if(!isPending && !currentUser?.user) {
       navigate('/login', { replace: true })

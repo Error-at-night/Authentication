@@ -12,6 +12,11 @@ const authenticateUser = async (req, res, next) => {
       req.user = payload.user;
       return next();
     }
+
+    if (!refreshToken) {
+      throw new CustomError.UnauthenticatedError('Authentication Invalid')
+    }
+
     const payload = isTokenValid(refreshToken);
 
     const hashedRefreshToken = createHash(refreshToken)

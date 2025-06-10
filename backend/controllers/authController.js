@@ -184,6 +184,11 @@ const login = async (req, res, next) => {
   }
 }
 
+const refreshToken = async (req, res) => {
+  const tokenUser = createTokenUser(req.user)
+  res.status(200).json({ user: tokenUser })
+}
+
 const logout = async (req, res, next) => {
   try {
     await Token.findOneAndDelete({ user: req.user.userId })
@@ -290,6 +295,7 @@ module.exports = {
   verifyEmail,
   resendVerificationCode,
   login,
+  refreshToken,
   logout,
   forgotPassword,
   resetPassword
