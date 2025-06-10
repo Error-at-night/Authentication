@@ -4,7 +4,7 @@ export function getErrorMessage(error: unknown): string {
     if (error.response) {
       switch (error.response.status) {
         case 400:
-          return error.response.data?.message || "Invalid request. Please verify your data and try again.";
+          return error.response.data?.message || "Invalid request. Please check your input and try again.";
         case 401:
           return error.response.data?.message || "Authentication required. Please login in.";
         case 403:
@@ -21,6 +21,10 @@ export function getErrorMessage(error: unknown): string {
     } else {
       return error.message || "An unknown error occurred.";
     }
+  }
+
+  if (error instanceof Error) {
+    return error.message
   }
 
   return "An unexpected error occurred.";
