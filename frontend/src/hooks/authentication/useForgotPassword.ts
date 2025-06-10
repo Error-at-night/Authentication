@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-import { forgotPassword } from '../../utils/authentication';
+import { forgotPassword } from '../../services/authentication'
 import { useState } from "react";
 
 export function useForgotPassword() {

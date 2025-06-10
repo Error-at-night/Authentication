@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
-import { resetPassword } from "../../utils/authentication"
+import { resetPassword } from "../../services/authentication"
 
 export function useResetPassword() {
   const navigate = useNavigate()

@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-import { logout } from '../../utils/authentication';
+import { logout } from '../../services/authentication';
 import { useNavigate } from "react-router-dom";
 
 export function useLogout() {

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
-import { verifyEmail } from '../../utils/authentication';
+import { verifyEmail } from '../../services/authentication';
 
 export function useVerifyEmail() {
   const navigate = useNavigate()
