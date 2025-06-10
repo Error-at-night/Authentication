@@ -8,3 +8,6 @@ export const LOGIN_ENDPOINT = "api/v1/auth/login"
 export const LOGOUT_ENDPOINT = "api/v1/auth/logout"
 export const FORGOT_PASSWORD_ENDPOINT = "api/v1/auth/forgot-password"
 export const RESET_PASSWORD_ENDPOINT = "api/v1/auth/reset-password"
+
+// user
+export const SHOW_CURRENT_USER_ENDPOINT = "api/v1/users/show-me"

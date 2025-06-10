@@ -9,11 +9,13 @@ import ResendVerificationCode from './pages/authentication/ResendVerificationCod
 import ForgotPassword from './pages/authentication/ForgotPassword';
 import ResetPassword from './pages/authentication/ResetPassword';
 import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 0,
+      staleTime: 60 * 1000,
+      retry: false,
     },
   },
 })
@@ -23,7 +25,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="dashboard" element={<Dashboard/>} />
+          <Route path="dashboard" element={
+            <ProtectedRoute>
+              <Dashboard/>
+            </ProtectedRoute>
+          } />
           <Route path="register" element={<Register/>} />
           <Route path="verify-email" element={<VerifyEmail/>} />
           <Route path="resend-verification-code" element={<ResendVerificationCode/>} />
