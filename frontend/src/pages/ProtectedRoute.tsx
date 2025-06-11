@@ -1,11 +1,9 @@
 import { useAuthRedirect } from "../hooks/user/useAuthRedirect";
-import { useNavigate } from "react-router-dom"
+import type { ProtectedRouteProps } from "../utils/types";
 
-function ProtectedRoute({ children } ) {
-
-  const navigate = useNavigate()
+function ProtectedRoute({ children }: ProtectedRouteProps ) {
   
-  const { currentUser, isPending, error } = useAuthRedirect()
+  const { currentUser, isPending } = useAuthRedirect()
 
   if(isPending) {
     return (
@@ -14,8 +12,6 @@ function ProtectedRoute({ children } ) {
   }
 
   if(!currentUser?.user) return null
-
-  if(error?.message === "Authentication Invalid") navigate("/login")
 
   return children
 }

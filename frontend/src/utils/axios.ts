@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosRequestConfig, type AxiosResponse } from 'axios';
-import { BASE_URL } from "./constants";
+import { BASE_URL, REFRESH_TOKEN_ENDPOINT } from "./constants";
 import toast from "react-hot-toast";
 
 const axiosInstance = axios.create({
@@ -35,8 +35,10 @@ axiosInstance.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as CustomAxiosRequestConfig;
 
+    console.log(originalRequest.url)
+
     const isUnauthorized = error.response?.status === 401;
-    const isNotLoginOrRefresh = !originalRequest.url?.includes('/login') && !originalRequest.url?.includes('/refresh-token');
+    const isNotLoginOrRefresh = !originalRequest.url?.includes("/login") && !originalRequest.url?.includes("/refresh-token");
 
     if (isUnauthorized && isNotLoginOrRefresh && !originalRequest._retry) {
       if (isRefreshing) {
@@ -51,7 +53,7 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await axiosInstance.get('/auth/refresh');
+        await axiosInstance.get(REFRESH_TOKEN_ENDPOINT);
 
         processQueue(null);
         return axiosInstance(originalRequest);
@@ -59,7 +61,7 @@ axiosInstance.interceptors.response.use(
         processQueue(refreshError, null);
 
         toast.error("Session expired, please login again")
-        window.location.href = '/login';
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

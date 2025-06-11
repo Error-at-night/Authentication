@@ -1,3 +1,5 @@
+import { type ReactNode } from "react";
+
 export type RegisterFormData = {
   fullName: string,
   email:  string,
@@ -26,4 +28,8 @@ export type ResetPasswordFormData = {
   password: string,
   confirmPassword: string,
   token: string
+}
+
+export type ProtectedRouteProps = {
+  children: ReactNode;
 }
