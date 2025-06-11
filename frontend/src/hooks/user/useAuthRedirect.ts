@@ -16,6 +16,5 @@ export function useAuthRedirect() {
     }
   }, [currentUser, isPending, error, navigate])
 
-
   return { currentUser, isPending, error }
 }

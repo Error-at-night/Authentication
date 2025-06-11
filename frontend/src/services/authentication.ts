@@ -1,7 +1,7 @@
 import axiosInstance from "../utils/axios"
-import { type forgotPasswordResponse, type LoginResponse, type LogoutResponse, type RegisterResponse, type ResendVerificationCodeResponse, type resetPasswordResponse, type VerifyEmailResponse } from "../utils/axiosResponseTypes"
+import type { forgotPasswordResponse, LoginResponse, LogoutResponse, RegisterResponse, ResendVerificationCodeResponse, resetPasswordResponse, VerifyEmailResponse } from "../utils/axiosResponseTypes"
 import { FORGOT_PASSWORD_ENDPOINT, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, REGISTER_ENDPOINT, RESEND_VERIFICATION_CODE_ENDPOINT, RESET_PASSWORD_ENDPOINT, VERIFY_EMAIL_ENDPOINT } from "../utils/constants"
-import { getErrorMessage } from "../utils/helpers"
+import { getErrorMessage } from "../utils/helpers/getErrorMessage"
 
 export const register = async (credentials: { fullName: string, email: string, password: string, confirmPassword: string }) => {
   try {

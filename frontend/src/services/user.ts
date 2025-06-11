@@ -1,7 +1,7 @@
 import axiosInstance from "../utils/axios"
 import type { getCurrentUserResponse } from "../utils/axiosResponseTypes"
 import { SHOW_CURRENT_USER_ENDPOINT } from "../utils/constants"
-import { getErrorMessage } from "../utils/helpers"
+import { getErrorMessage } from "../utils/helpers/getErrorMessage"
 
 export const getCurrentUser = async () => {
   try {

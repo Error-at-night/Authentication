@@ -10,6 +10,7 @@ import ForgotPassword from './pages/authentication/ForgotPassword';
 import ResetPassword from './pages/authentication/ResetPassword';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './pages/ProtectedRoute';
+import { NavigateHandler } from './components/NavigateHandler';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +25,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <NavigateHandler/>
         <Routes>
           <Route path="dashboard" element={
             <ProtectedRoute>

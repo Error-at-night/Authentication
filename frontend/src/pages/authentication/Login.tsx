@@ -1,5 +1,5 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { type LoginFormData } from "../../utils/types"
+import type { LoginFormData } from "../../utils/types"
 import { useState } from "react";
 import { Eye, EyeOff } from 'lucide-react';
 import { useLogin } from '../../hooks/authentication/useLogin';
