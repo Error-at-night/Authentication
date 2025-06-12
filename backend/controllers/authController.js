@@ -119,25 +119,24 @@ const resendVerificationCode = async (req, res, next) => {
 const login = async (req, res, next) => {
   const { email, password } = req.body
   
-   try {
-
-    if(!email || !password) {
-      throw new CustomError.BadRequestError("Please your provide email and password")
+  try {
+    if (!email || !password) {
+      throw new CustomError.BadRequestError("Please provide email and password")
     }
 
     const user = await User.findOne({ email })
 
-    if(!user) {
+    if (!user) {
       throw new CustomError.BadRequestError("Invalid email")
     }
-    
+
     const isPasswordCorrect = await user.comparePassword(password)
 
-    if(!isPasswordCorrect) {
+    if (!isPasswordCorrect) {
       throw new CustomError.BadRequestError("Invalid password")
     }
 
-    if(!user.isVerified) {
+    if (!user.isVerified) {
       throw new CustomError.UnauthenticatedError("Please verify your email")
     }
 
@@ -147,44 +146,34 @@ const login = async (req, res, next) => {
 
     const existingToken = await Token.findOne({ user: user._id })
 
-    if(existingToken) {
-      const { isValid } = existingToken
-
-      if(!isValid) {
-        throw new CustomError.UnauthenticatedError('Invalid Credentials')
-      }
-      
+    if (existingToken && existingToken.isValid) {
       refreshToken = existingToken.refreshToken
       attachCookiesToResponse({ res, user: tokenUser, refreshToken })
-      res.status(StatusCodes.OK).json({ user: tokenUser });
-      return;
+      return res.status(StatusCodes.OK).json({ user: tokenUser })
     }
 
     refreshToken = crypto.randomBytes(40).toString("hex")
-    const userAgent = req.headers["user-agent"]
-    const ip = req.ip
 
     const hashedRefreshToken = createHash(refreshToken)
 
     const userToken = {
-      refreshToken: hashedRefreshToken, 
-      userAgent, 
-      ip, 
+      refreshToken: hashedRefreshToken,
+      userAgent: req.headers["user-agent"],
+      ip: req.ip,
       user: user._id
     }
 
     await Token.create(userToken)
-
     attachCookiesToResponse({ res, user: tokenUser, refreshToken })
-    
-    res.status(StatusCodes.OK).json({ message: "Login successful", user: tokenUser })
 
-  } catch(error) {
+    res.status(StatusCodes.OK).json({ message: "Login successful", user: tokenUser })
+  } catch (error) {
     next(error)
   }
 }
 
 const refreshToken = async (req, res) => {
+  console.log("refresh hit")
   res.status(StatusCodes.OK).json({ user: req.user })
 }
 

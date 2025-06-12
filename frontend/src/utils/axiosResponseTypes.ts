@@ -32,5 +32,9 @@ export type resetPasswordResponse = {
 }
 
 export type getCurrentUserResponse = {
-  user: string
+  user: {
+    fullName: string;
+    userId: string;
+    email: string;
+  }
 }

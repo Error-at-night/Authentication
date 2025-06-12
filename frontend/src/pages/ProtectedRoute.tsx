@@ -3,9 +3,9 @@ import type { ProtectedRouteProps } from "../utils/types";
 
 function ProtectedRoute({ children }: ProtectedRouteProps ) {
   
-  const { currentUser, isPending } = useAuthRedirect()
+  const { currentUser, isPending, isRefreshing } = useAuthRedirect()
 
-  if(isPending) {
+  if(isPending || isRefreshing) {
     return (
       <main>isLoading</main>
     )
@@ -19,4 +19,5 @@ function ProtectedRoute({ children }: ProtectedRouteProps ) {
 
   return children
 }
+
 export default ProtectedRoute
