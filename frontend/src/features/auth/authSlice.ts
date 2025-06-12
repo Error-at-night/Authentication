@@ -16,10 +16,10 @@ type AuthState = {
 }
 
 const getUserFromLocalStorage = (): User | null => {
-  const user = localStorage.getItem('user');
-  if (!user) return null;
-  return JSON.parse(user);
-};
+  const user = localStorage.getItem("user")
+  if(!user) return null
+  return JSON.parse(user)
+}
 
 const initialState: AuthState = {
   currentUser: getUserFromLocalStorage(),
@@ -41,7 +41,8 @@ const authSlice = createSlice({
     setCurrentUser: (state, action: PayloadAction<User>) => {
       const user = action.payload
       state.currentUser = user
-      localStorage.setItem('user', JSON.stringify(user));
+      state.authLoading = false
+      localStorage.setItem('user', JSON.stringify(user))
     },
     clearUser: (state) => {
       state.currentUser = null

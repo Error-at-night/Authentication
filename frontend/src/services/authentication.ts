@@ -1,5 +1,5 @@
 import axiosInstance from "../utils/axios"
-import type { forgotPasswordResponse, LoginResponse, LogoutResponse, RegisterResponse, ResendVerificationCodeResponse, resetPasswordResponse, VerifyEmailResponse } from "../utils/axiosResponseTypes"
+import type { forgotPasswordResponse, LoginResponse, LogoutResponse, RegisterResponse, ResendVerificationCodeResponse, resetPasswordResponse, VerifyEmailResponse } from "../utils/axiosResponseTypes/authenticationTypes"
 import { FORGOT_PASSWORD_ENDPOINT, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, REGISTER_ENDPOINT, RESEND_VERIFICATION_CODE_ENDPOINT, RESET_PASSWORD_ENDPOINT, VERIFY_EMAIL_ENDPOINT } from "../utils/constants"
 import { getErrorMessage } from "../utils/helpers/getErrorMessage"
 

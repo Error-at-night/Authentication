@@ -2,6 +2,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 
+import { NavigateHandler } from './components/NavigateHandler';
+import { AuthRedirectWrapper } from './components/AuthRedirectWrapper';
+import ProtectedRoute from './components/ProtectedRoute';
+
 import Register from './pages/authentication/Register'
 import Login from './pages/authentication/Login';
 import VerifyEmail from './pages/authentication/VerifyEmail';
@@ -9,8 +13,6 @@ import ResendVerificationCode from './pages/authentication/ResendVerificationCod
 import ForgotPassword from './pages/authentication/ForgotPassword';
 import ResetPassword from './pages/authentication/ResetPassword';
 import Dashboard from './pages/Dashboard';
-import ProtectedRoute from './pages/ProtectedRoute';
-import { NavigateHandler } from './components/NavigateHandler';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,6 +27,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <AuthRedirectWrapper />
         <NavigateHandler/>
         <Routes>
           <Route path="dashboard" element={

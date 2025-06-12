@@ -12,7 +12,7 @@ const attachCookiesToResponse = ({ res, user, refreshToken }) => {
   const refreshTokenJWT = createJWT({ payload: { user, refreshToken }, expiresIn: "7d" });
 
   // for testing
-  const oneMinute = 1000 * 60 
+  // const oneMinute = 1000 * 60 
 
   const oneHour = 1000 * 60 * 60
   const sevenDays = 1000 * 60 * 60 * 24 * 7
