@@ -1,8 +1,7 @@
 const crypto = require("crypto");
 const CustomError = require('../errors');
-const { isTokenValid, createHash } = require('../utils');
+const { isTokenValid, createHash, attachCookiesToResponse } = require("../utils/index");
 const Token = require('../models/Token');
-const { attachCookiesToResponse } = require('../utils');
 
 const authenticateUser = async (req, res, next) => {
   const { accessToken } = req.signedCookies
@@ -23,20 +22,20 @@ const authenticateUser = async (req, res, next) => {
 const authenticateRefreshToken = async (req, res, next) => {
   const { refreshToken } = req.signedCookies
 
-  if (!refreshToken) {
-    throw new CustomError.UnauthenticatedError("Authentication Invalid")
-  }
-
   try {
-    const payload = isTokenValid(refreshToken);
+    if (!refreshToken) {
+      throw new CustomError.UnauthenticatedError("Authentication Invalid")
+    }
+    
+    const payload = isTokenValid(refreshToken)
 
-    const plainRefreshToken = payload.refreshToken;
+    const plainRefreshToken = payload.refreshToken
 
     if (!plainRefreshToken) {
-      throw new CustomError.UnauthenticatedError('Invalid token');
+      throw new CustomError.UnauthenticatedError("Invalid token")
     }
 
-    const hashedRefreshToken = createHash(plainRefreshToken);
+    const hashedRefreshToken = createHash(plainRefreshToken)
 
     const existingToken = await Token.findOne({
       user: payload.user.userId,
@@ -58,7 +57,7 @@ const authenticateRefreshToken = async (req, res, next) => {
       refreshToken: newHashedRefreshToken,
       userAgent: req.headers["user-agent"],
       ip: req.ip,
-    });
+    })
 
     attachCookiesToResponse({
       res,
@@ -66,7 +65,7 @@ const authenticateRefreshToken = async (req, res, next) => {
       refreshToken: newPlainRefreshToken,
     })
 
-    req.user = payload.user;
+    req.user = payload.user
     next()
   } catch (error) {
     console.log("Refresh token validation failed", error.message)
