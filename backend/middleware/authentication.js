@@ -4,40 +4,50 @@ const Token = require('../models/Token');
 const { attachCookiesToResponse } = require('../utils');
 
 const authenticateUser = async (req, res, next) => {
-  const { refreshToken, accessToken } = req.signedCookies;
+  const { accessToken } = req.signedCookies;
 
   try {
-    if (accessToken) {
-      const payload = isTokenValid(accessToken);
-      req.user = payload.user;
-      return next();
-    }
-
-    if (!refreshToken) {
+    if (!accessToken) {
       throw new CustomError.UnauthenticatedError('Authentication Invalid')
     }
 
-    const payload = isTokenValid(refreshToken);
+    const payload = isTokenValid(accessToken)
+    req.user = payload.user
+    next()
+  } catch (error) {
+    throw new CustomError.UnauthenticatedError('Authentication Invalid')
+  }
+}
+
+const authenticateRefreshToken = async (req, res, next) => {
+  const { refreshToken } = req.signedCookies
+
+  if (!refreshToken) {
+    throw new CustomError.UnauthenticatedError('Authentication Invalid')
+  }
+
+  try {
+    const payload = isTokenValid(refreshToken)
 
     const hashedRefreshToken = createHash(refreshToken)
 
     const existingToken = await Token.findOne({
       user: payload.user.userId,
       refreshToken: hashedRefreshToken,
-    });
+    })
 
     if (!existingToken || !existingToken?.isValid) {
-      throw new CustomError.UnauthenticatedError('Authentication Invalid');
+      throw new CustomError.UnauthenticatedError('Authentication Invalid')
     }
-
-    const newRefreshToken = crypto.randomBytes(40).toString("hex")
-    const newHashedRefreshToken = createHash(newRefreshToken)
 
     await existingToken.deleteOne()
 
+    const newRefreshToken = crypto.randomBytes(40).toString('hex')
+    const newHashedRefreshToken = createHash(newRefreshToken)
+
     await Token.create({
-      refreshToken: newHashedRefreshToken,
       user: payload.user.userId,
+      refreshToken: newHashedRefreshToken,
       userAgent: req.headers['user-agent'],
       ip: req.ip,
     })
@@ -46,15 +56,16 @@ const authenticateUser = async (req, res, next) => {
       res,
       user: payload.user,
       refreshToken: newRefreshToken,
-    });
+    })
 
-    req.user = payload.user;
-    next();
+    req.user = payload.user
+    next()
   } catch (error) {
-    throw new CustomError.UnauthenticatedError('Authentication Invalid');
+    throw new CustomError.UnauthenticatedError('Authentication Invalid')
   }
 }
 
-module.exports = { 
-  authenticateUser 
+module.exports =  {
+  authenticateUser,
+  authenticateRefreshToken
 }

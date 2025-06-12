@@ -167,7 +167,7 @@ const login = async (req, res, next) => {
     const hashedRefreshToken = createHash(refreshToken)
 
     const userToken = {
-     refreshToken: hashedRefreshToken, 
+      refreshToken: hashedRefreshToken, 
       userAgent, 
       ip, 
       user: user._id
@@ -185,8 +185,7 @@ const login = async (req, res, next) => {
 }
 
 const refreshToken = async (req, res) => {
-  const tokenUser = createTokenUser(req.user)
-  res.status(200).json({ user: tokenUser })
+  res.status(StatusCodes.OK).json({ user: req.user })
 }
 
 const logout = async (req, res, next) => {

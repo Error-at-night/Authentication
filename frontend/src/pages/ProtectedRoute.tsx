@@ -11,7 +11,11 @@ function ProtectedRoute({ children }: ProtectedRouteProps ) {
     )
   }
 
-  if(!currentUser?.user) return null
+  if(!currentUser?.user) {
+    return (
+      <main>Redirecting to login</main>
+    )
+  }
 
   return children
 }
