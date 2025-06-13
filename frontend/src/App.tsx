@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 
 import { NavigateHandler } from './components/NavigateHandler';
-import { AuthRedirectWrapper } from './components/AuthRedirectWrapper';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import Register from './pages/authentication/Register'
@@ -27,7 +26,6 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AuthRedirectWrapper />
         <NavigateHandler/>
         <Routes>
           <Route path="dashboard" element={

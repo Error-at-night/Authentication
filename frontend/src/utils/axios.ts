@@ -2,7 +2,7 @@ import axios, { AxiosError, type AxiosRequestConfig, type AxiosResponse } from '
 import { BASE_URL, REFRESH_TOKEN_ENDPOINT } from "./constants";
 import toast from "react-hot-toast";
 import { navigate } from './helpers/navigate';
-import { startRefresh, endRefresh, clearUser } from '../features/auth/authSlice';
+import { startRefresh, endRefresh } from '../features/auth/authSlice';
 import { store } from '../store/store';
 
 const axiosInstance = axios.create({
@@ -57,7 +57,6 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError);
-        store.dispatch(clearUser());
         toast.error('Session expired. Please login again.');
         navigate('/login');
         return Promise.reject(refreshError);

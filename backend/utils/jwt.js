@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const createJWT = ({ payload,  expiresIn = "1h" }) => {
+const createJWT = ({ payload,  expiresIn = "1m" }) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });
   return token;
 };
@@ -8,14 +8,15 @@ const createJWT = ({ payload,  expiresIn = "1h" }) => {
 const isTokenValid = (token) => jwt.verify(token, process.env.JWT_SECRET);
 
 const attachCookiesToResponse = ({ res, user, refreshToken }) => {
-  const accessTokenJWT = createJWT({ payload: { user }, expiresIn: "1h" });
-  const refreshTokenJWT = createJWT({ payload: { user, refreshToken }, expiresIn: "7d" });
+  const accessTokenJWT = createJWT({ payload: { user }, expiresIn: "1m" });
+  const refreshTokenJWT = createJWT({ payload: { user, refreshToken }, expiresIn: "5m" });
 
   // for testing
-  // const oneMinute = 1000 * 60 
+  const oneHour = 1000 * 60 
+  const sevenDays = 1000 * 60 * 5 
 
-  const oneHour = 1000 * 60 * 60
-  const sevenDays = 1000 * 60 * 60 * 24 * 7
+  // const oneHour = 1000 * 60 * 60
+  // const sevenDays = 1000 * 60 * 60 * 24 * 7
 
   res.cookie('accessToken', accessTokenJWT, {
     httpOnly: true,

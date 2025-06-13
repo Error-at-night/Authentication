@@ -3,20 +3,21 @@ import type { ProtectedRouteProps } from "../utils/types";
 import type { RootState } from '../store/store';
 import { Navigate } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
+import { useGetCurrentUser } from "../hooks/user/useGetCurrentUser";
 
 function ProtectedRoute({ children }: ProtectedRouteProps ) {
+
+  const { currentUser, isPending } = useGetCurrentUser()
   
   const isRefreshing = useSelector((state: RootState) => state.auth.isRefreshing)
-  const currentAuthUser = useSelector((state: RootState) => state.auth.currentUser)
-  const isAuthLoading = useSelector((state: RootState) => state.auth.authLoading)
 
-  if(isAuthLoading || isRefreshing) {
+  if(isPending || isRefreshing) {
     return (
       <LoadingSpinner/>
     )
   }
 
-  if(!currentAuthUser?.user) {
+  if(!currentUser?.user) {
     return <Navigate to="/login" replace />
   }
 
