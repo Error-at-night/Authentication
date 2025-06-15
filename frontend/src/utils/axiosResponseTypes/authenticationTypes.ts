@@ -16,7 +16,17 @@ export type LoginResponse = {
     fullName: string;
     userId: string;
     email: string;
-  }
+  },
+  accessToken: string;
+}
+
+export type RefreshTokenResponse = {
+  user: {
+    fullName: string;
+    userId: string;
+    email: string;
+  },
+  accessToken: string;
 }
 
 export type LogoutResponse = {

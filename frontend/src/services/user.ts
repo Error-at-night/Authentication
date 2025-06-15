@@ -5,7 +5,7 @@ import { getErrorMessage } from "../utils/helpers/getErrorMessage"
 
 export const getCurrentUser = async () => {
   try {
-    const response = await axiosInstance.get<getCurrentUserResponse>(SHOW_CURRENT_USER_ENDPOINT)
+    const response =  await axiosInstance.get<getCurrentUserResponse>(SHOW_CURRENT_USER_ENDPOINT)
     return response.data
   } catch(error) {
     const errorMessage = getErrorMessage(error)

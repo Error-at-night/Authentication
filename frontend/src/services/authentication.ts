@@ -1,6 +1,6 @@
 import axiosInstance from "../utils/axios"
-import type { forgotPasswordResponse, LoginResponse, LogoutResponse, RegisterResponse, ResendVerificationCodeResponse, resetPasswordResponse, VerifyEmailResponse } from "../utils/axiosResponseTypes/authenticationTypes"
-import { FORGOT_PASSWORD_ENDPOINT, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, REGISTER_ENDPOINT, RESEND_VERIFICATION_CODE_ENDPOINT, RESET_PASSWORD_ENDPOINT, VERIFY_EMAIL_ENDPOINT } from "../utils/constants"
+import type { forgotPasswordResponse, LoginResponse, LogoutResponse, RefreshTokenResponse, RegisterResponse, ResendVerificationCodeResponse, resetPasswordResponse, VerifyEmailResponse } from "../utils/axiosResponseTypes/authenticationTypes"
+import { FORGOT_PASSWORD_ENDPOINT, LOGIN_ENDPOINT, REFRESH_TOKEN_ENDPOINT, LOGOUT_ENDPOINT, REGISTER_ENDPOINT, RESEND_VERIFICATION_CODE_ENDPOINT, RESET_PASSWORD_ENDPOINT, VERIFY_EMAIL_ENDPOINT } from "../utils/constants"
 import { getErrorMessage } from "../utils/helpers/getErrorMessage"
 
 export const register = async (credentials: { fullName: string, email: string, password: string, confirmPassword: string }) => {
@@ -41,6 +41,11 @@ export const login = async (credentials: { email: string, password: string }) =>
     const errorMessage = getErrorMessage(error)
     throw new Error(errorMessage)
   }
+}
+
+export const refreshToken = async (): Promise<RefreshTokenResponse> => {
+  const response = await axiosInstance.get(REFRESH_TOKEN_ENDPOINT)
+  return response.data
 }
 
 export const logout = async () => {

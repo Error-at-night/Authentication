@@ -2,7 +2,7 @@ const User = require("../models/User")
 const Token = require("../models/Token")
 const CustomError = require("../errors")
 const { StatusCodes } = require("http-status-codes")
-const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, resendVerificationCodeEmail, sendResetPasswordEmail, createHash, resetPasswordSuccessEmail } = require("../utils/index")
+const { attachCookiesToResponse, createTokenUser, sendVerificationEmail, resendVerificationCodeEmail, sendResetPasswordEmail, createHash, resetPasswordSuccessEmail, createAccessTokenJWT, isTokenValid } = require("../utils/index")
 const crypto = require('crypto');
 
 const register = async (req, res, next) => {
@@ -142,51 +142,91 @@ const login = async (req, res, next) => {
 
     const tokenUser = createTokenUser(user)
 
-    let refreshToken = ""
+    const accessTokenJWT = createAccessTokenJWT({ payload: { user: tokenUser }})
 
-    const existingToken = await Token.findOne({ user: user._id })
-
-    if (existingToken && existingToken.isValid) {
-      refreshToken = existingToken.refreshToken
-      attachCookiesToResponse({ res, user: tokenUser, refreshToken })
-      return res.status(StatusCodes.OK).json({ user: tokenUser })
-    }
-
-    refreshToken = crypto.randomBytes(40).toString("hex")
-
+    const refreshToken = crypto.randomBytes(40).toString("hex")
     const hashedRefreshToken = createHash(refreshToken)
 
-    const userToken = {
+    await Token.findOneAndDelete({ user: user._id })
+
+    await Token.create({
       refreshToken: hashedRefreshToken,
       userAgent: req.headers["user-agent"],
       ip: req.ip,
-      user: user._id
-    }
+      user: user._id,
+    })
 
-    await Token.create(userToken)
     attachCookiesToResponse({ res, user: tokenUser, refreshToken })
 
-    res.status(StatusCodes.OK).json({ message: "Login successful", user: tokenUser })
+    res.status(StatusCodes.OK).json({ message: "Login successful", user: tokenUser, accessToken: accessTokenJWT })
   } catch (error) {
     next(error)
   }
 }
 
-const refreshToken = async (req, res) => {
-  console.log("refresh hit")
-  res.status(StatusCodes.OK).json({ user: req.user })
+const refreshToken = async (req, res, next) => {
+  const { refreshToken } = req.signedCookies
+
+  console.log("Signed cookies:", req.signedCookies)
+
+  try {
+    if (!refreshToken) {
+      throw new CustomError.UnauthenticatedError("Authentication invalid")
+    }
+
+    const payload = isTokenValid(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+
+    console.log("Refresh token cookie:", refreshToken)
+    console.log("Decoded payload:", payload)
+
+    const plainRefreshToken = payload.refreshToken
+
+    console.log("Plain refreshToken:", plainRefreshToken)
+
+    if(!plainRefreshToken) {
+      throw new CustomError.UnauthenticatedError("Authentication invalid")
+    }
+
+    const hashedRefreshToken = createHash(plainRefreshToken)
+
+    console.log("Hashed refreshToken:", hashedRefreshToken)
+
+    const existingToken = await Token.findOne({
+      refreshToken: hashedRefreshToken,
+      user: payload.user.userId,
+    })
+
+    console.log("Existing token:", existingToken)
+
+    if (!existingToken || !existingToken.isValid) {
+      throw new CustomError.UnauthenticatedError("Authentication invalid")
+    }
+
+    await existingToken.deleteOne()
+
+    const newRefreshToken = crypto.randomBytes(40).toString("hex")
+    const newHashedRefreshToken = createHash(newRefreshToken)
+
+    await Token.create({
+      user: payload.user.userId,
+      refreshToken: newHashedRefreshToken,
+      userAgent: req.headers["user-agent"],
+      ip: req.ip,
+    })
+
+    const newAccessTokenJWT = createAccessTokenJWT({ payload: { user: payload.user }})
+
+    attachCookiesToResponse({ res, user: payload.user, refreshToken: newRefreshToken })
+
+    res.status(StatusCodes.OK).json({ user: payload.user, accessToken: newAccessTokenJWT })
+  } catch (error) {
+    next(error)
+  }
 }
 
 const logout = async (req, res, next) => {
   try {
     await Token.findOneAndDelete({ user: req.user.userId })
-    
-    res.cookie("accessToken", "logout", {
-      httpOnly: true,
-      expires: new Date(Date.now()),
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-    })
     
     res.cookie("refreshToken", "logout", {
       httpOnly: true,
