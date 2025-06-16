@@ -2,28 +2,36 @@ import type { ProtectedRouteProps } from "../utils/types";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
 import { useGetCurrentUser } from "../hooks/user/useGetCurrentUser";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import type { RootState } from "../store/store";
+import { useEffect, } from "react";
 import toast from "react-hot-toast";
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { currentUser, isPending } = useGetCurrentUser()
-
-  const isRefreshing = useSelector((state: RootState) => state.auth.isRefreshing)
+  const { currentUser, isLoading } = useGetCurrentUser()
 
   const navigate = useNavigate()
   
   useEffect(() => {
-    if (!isRefreshing && error?.message === "Authent") {
-      toast.error("Session expired, please login againnnnnnnn")
+    if(!currentUser?.user) {
+      toast.error("Session expired, please login again")
       navigate("/login")
     }
-  }, [currentUser, isPending, navigate])
+  }, [currentUser, isLoading, navigate])
 
-  if(isPending) return <LoadingSpinner/>
+  if(isLoading) {
+    return (
+      <>
+        <LoadingSpinner/>
+      </>
+    ) 
+  }
 
-  if(currentUser?.user && !isPending) return children;
+  if(currentUser?.user) {
+    return (
+      <>
+      {children}
+      </>
+    )
+  };
 }
 
 export default ProtectedRoute;

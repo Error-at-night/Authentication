@@ -15,8 +15,6 @@ type FailedRequest = {
   reject: (reason?: unknown) => void
 }
 
-// export let isRefreshing = false;
-
 let failedQueue: FailedRequest[] = []
 
 const processQueue = (error: unknown) => {

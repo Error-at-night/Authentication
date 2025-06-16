@@ -44,8 +44,13 @@ export const login = async (credentials: { email: string, password: string }) =>
 }
 
 export const refreshToken = async (): Promise<RefreshTokenResponse> => {
-  const response = await axiosInstance.get(REFRESH_TOKEN_ENDPOINT)
-  return response.data
+  try {
+    const response = await axiosInstance.get(REFRESH_TOKEN_ENDPOINT)
+    return response.data
+  } catch(error) {
+    const errorMessage = getErrorMessage(error)
+    throw new Error(errorMessage)
+  }
 }
 
 export const logout = async () => {
