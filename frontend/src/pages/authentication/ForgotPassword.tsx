@@ -24,7 +24,7 @@ function ForgotPassword() {
       {emailSent ? 
         <div className="text-center w-[500px] mx-auto bg-white p-4 pb-6 shadow-md rounded-lg">
           <h1 className="text-[#2B3445] font-bold text-[2rem]">Forgot Password</h1>
-          <p className="text-[1rem]">If an account exists for {emailSubmitted}, you will receive an email to reset your password</p>
+          <p className="text-[1rem]">If an account exists for <strong>{emailSubmitted}</strong>, you will receive an email to reset your password</p>
           <div className="mt-5">
             <p className="text-center">Back to {" "}
               <Link to="/login" className="underline cursor-pointer font-bold">Login</Link>

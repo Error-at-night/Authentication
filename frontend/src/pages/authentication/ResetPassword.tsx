@@ -6,6 +6,7 @@ import { Eye, EyeOff } from "lucide-react";
 import ButtonSpinner from "../../components/ButtonSpinner";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 function ResetPassword() {
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -87,6 +88,11 @@ function ResetPassword() {
           >
             {isPending ? <ButtonSpinner/> : "Reset Password"}
           </button>
+        </div>
+        <div className="mt-5">
+          <p className="text-center">Back to {" "}
+            <Link to="/login" className="underline cursor-pointer font-bold">Login</Link>
+          </p>
         </div>
       </form>
     </main>

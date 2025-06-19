@@ -80,8 +80,8 @@ const resendVerificationCode = async (req, res, next) => {
 
     const user = await User.findOne({ email })
 
-    if(!user) {
-      throw new CustomError.NotFoundError("No user found with this email")
+    if (!user) {
+      throw new CustomError.NotFoundError("Email does not exist")
     }
 
     if(user.isVerified) {
@@ -121,19 +121,19 @@ const login = async (req, res, next) => {
   
   try {
     if (!email || !password) {
-      throw new CustomError.BadRequestError("Please provide email and password")
+      throw new CustomError.BadRequestError("Please provide your email and password")
     }
 
     const user = await User.findOne({ email })
 
     if (!user) {
-      throw new CustomError.BadRequestError("Invalid email")
+      throw new CustomError.BadRequestError("Invalid email or password")
     }
 
     const isPasswordCorrect = await user.comparePassword(password)
 
     if (!isPasswordCorrect) {
-      throw new CustomError.BadRequestError("Invalid password")
+      throw new CustomError.BadRequestError("Invalid email or password")
     }
 
     if (!user.isVerified) {
@@ -301,7 +301,7 @@ const resetPassword = async (req, res, next) => {
     })
 
     if(!user) {
-      throw new CustomError.UnauthenticatedError("Invalid or expired link")
+      throw new CustomError.BadRequestError("Invalid or expired link")
     }
     
     user.password = password

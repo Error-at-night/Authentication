@@ -86,7 +86,7 @@ function Login() {
           </button>
         </div>
         <div className="mt-5">
-          <p className="text-center">Don't have any account? {" "}
+          <p className="text-center">Don't have an account? {" "}
             <Link to="/register" className="underline cursor-pointer font-bold">Register</Link>
           </p>
         </div>

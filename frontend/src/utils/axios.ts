@@ -31,6 +31,7 @@ const processQueue = (error: unknown) => {
 const axiosInstance = axios.create({
   baseURL: BASE_URL, 
   withCredentials: true,
+  timeout: 5000,
 })
 
 axiosInstance.interceptors.request.use((config) => {
