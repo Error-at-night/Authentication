@@ -167,8 +167,6 @@ const login = async (req, res, next) => {
 const refreshToken = async (req, res, next) => {
   const { refreshToken } = req.signedCookies
 
-  console.log("Signed cookies:", req.signedCookies)
-
   try {
     if (!refreshToken) {
       throw new CustomError.UnauthenticatedError("Authentication invalid")
@@ -176,12 +174,7 @@ const refreshToken = async (req, res, next) => {
 
     const payload = isTokenValid(refreshToken, process.env.REFRESH_TOKEN_SECRET)
 
-    console.log("Refresh token cookie:", refreshToken)
-    console.log("Decoded payload:", payload)
-
     const plainRefreshToken = payload.refreshToken
-
-    console.log("Plain refreshToken:", plainRefreshToken)
 
     if(!plainRefreshToken) {
       throw new CustomError.UnauthenticatedError("Authentication invalid")
@@ -189,14 +182,10 @@ const refreshToken = async (req, res, next) => {
 
     const hashedRefreshToken = createHash(plainRefreshToken)
 
-    console.log("Hashed refreshToken:", hashedRefreshToken)
-
     const existingToken = await Token.findOne({
       refreshToken: hashedRefreshToken,
       user: payload.user.userId,
     })
-
-    console.log("Existing token:", existingToken)
 
     if (!existingToken || !existingToken.isValid) {
       throw new CustomError.UnauthenticatedError("Authentication invalid")

@@ -1,15 +1,8 @@
-import { useSelector } from "react-redux";
 import ButtonSpinner from "../components/ButtonSpinner"
 import { useLogout } from "../hooks/authentication/useLogout";
-import type { RootState } from "../store/store";
 
 function Dashboard() {
   const { logoutUser, isPending } = useLogout()
-
-  const user = useSelector((state: RootState) => state.auth.currentUser)
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken)
-
-  console.log(user, accessToken)
 
   return (
     <>
