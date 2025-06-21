@@ -1,11 +1,11 @@
 import axiosInstance from "../utils/axios"
-import type { getCurrentUserResponse } from "../utils/axiosResponseTypes/userTypes"
+import type { GetCurrentUserResponse } from "../utils/axiosResponseTypes/userTypes"
 import { SHOW_CURRENT_USER_ENDPOINT } from "../utils/constants"
 import { getErrorMessage } from "../utils/helpers/getErrorMessage"
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = async (): Promise<GetCurrentUserResponse> => {
   try {
-    const response =  await axiosInstance.get<getCurrentUserResponse>(SHOW_CURRENT_USER_ENDPOINT)
+    const response =  await axiosInstance.get(SHOW_CURRENT_USER_ENDPOINT)
     return response.data
   } catch(error) {
     const errorMessage = getErrorMessage(error)

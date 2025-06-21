@@ -33,10 +33,10 @@ export type LogoutResponse = {
   message: string;
 };
 
-export type forgotPasswordResponse = {
+export type ForgotPasswordResponse = {
   message: string;
 }
 
-export type resetPasswordResponse = {
+export type ResetPasswordResponse = {
   message: string;
 }

@@ -1,11 +1,12 @@
 import axiosInstance from "../utils/axios"
-import type { forgotPasswordResponse, LoginResponse, LogoutResponse, RefreshTokenResponse, RegisterResponse, ResendVerificationCodeResponse, resetPasswordResponse, VerifyEmailResponse } from "../utils/axiosResponseTypes/authenticationTypes"
+import type { ForgotPasswordResponse, LoginResponse, LogoutResponse, RefreshTokenResponse, RegisterResponse, ResendVerificationCodeResponse, ResetPasswordResponse, VerifyEmailResponse } from "../utils/axiosResponseTypes/authenticationTypes"
 import { FORGOT_PASSWORD_ENDPOINT, LOGIN_ENDPOINT, REFRESH_TOKEN_ENDPOINT, LOGOUT_ENDPOINT, REGISTER_ENDPOINT, RESEND_VERIFICATION_CODE_ENDPOINT, RESET_PASSWORD_ENDPOINT, VERIFY_EMAIL_ENDPOINT } from "../utils/constants"
 import { getErrorMessage } from "../utils/helpers/getErrorMessage"
 
-export const register = async (credentials: { fullName: string, email: string, password: string, confirmPassword: string }) => {
+export const register = async (credentials: 
+  { fullName: string, email: string, password: string, confirmPassword: string }): Promise<RegisterResponse> => {
   try {
-    const response = await axiosInstance.post<RegisterResponse>(REGISTER_ENDPOINT, credentials) 
+    const response = await axiosInstance.post(REGISTER_ENDPOINT, credentials) 
     return response.data
   } catch (error) {
     const errorMessage = getErrorMessage(error)
@@ -13,9 +14,9 @@ export const register = async (credentials: { fullName: string, email: string, p
   }
 }
 
-export const verifyEmail = async (credentials: { verificationCode: string }) => {
+export const verifyEmail = async (credentials: { verificationCode: string }): Promise<VerifyEmailResponse> => {
   try {
-    const response = await axiosInstance.post<VerifyEmailResponse>(VERIFY_EMAIL_ENDPOINT, credentials) 
+    const response = await axiosInstance.post(VERIFY_EMAIL_ENDPOINT, credentials) 
     return response.data
   } catch (error) {
     const errorMessage = getErrorMessage(error)
@@ -23,9 +24,9 @@ export const verifyEmail = async (credentials: { verificationCode: string }) => 
   }
 }
 
-export const resendVerificationCode = async (credentials: { email: string }) => {
+export const resendVerificationCode = async (credentials: { email: string }): Promise<ResendVerificationCodeResponse> => {
   try {
-    const response = await axiosInstance.post<ResendVerificationCodeResponse>(RESEND_VERIFICATION_CODE_ENDPOINT, credentials) 
+    const response = await axiosInstance.post(RESEND_VERIFICATION_CODE_ENDPOINT, credentials) 
     return response.data
   } catch (error) {
     const errorMessage = getErrorMessage(error)
@@ -33,9 +34,9 @@ export const resendVerificationCode = async (credentials: { email: string }) => 
   }
 }
 
-export const login = async (credentials: { email: string, password: string }) => {
+export const login = async (credentials: { email: string, password: string }): Promise<LoginResponse> => {
   try {
-    const response = await axiosInstance.post<LoginResponse>(LOGIN_ENDPOINT, credentials) 
+    const response = await axiosInstance.post(LOGIN_ENDPOINT, credentials) 
     return response.data
   } catch (error) {
     const errorMessage = getErrorMessage(error)
@@ -53,9 +54,9 @@ export const refreshToken = async (): Promise<RefreshTokenResponse> => {
   }
 }
 
-export const logout = async () => {
+export const logout = async (): Promise<LogoutResponse> => {
   try {
-    const response = await axiosInstance.delete<LogoutResponse>(LOGOUT_ENDPOINT) 
+    const response = await axiosInstance.delete(LOGOUT_ENDPOINT) 
     return response.data
   } catch (error) {
     const errorMessage = getErrorMessage(error)
@@ -63,9 +64,9 @@ export const logout = async () => {
   }
 }
 
-export const forgotPassword = async (credentials: { email: string }) => {
+export const forgotPassword = async (credentials: { email: string }): Promise<ForgotPasswordResponse> => {
   try {
-    const response = await axiosInstance.post<forgotPasswordResponse>(FORGOT_PASSWORD_ENDPOINT, credentials) 
+    const response = await axiosInstance.post(FORGOT_PASSWORD_ENDPOINT, credentials) 
     return response.data
   } catch (error) {
     const errorMessage = getErrorMessage(error)
@@ -73,9 +74,10 @@ export const forgotPassword = async (credentials: { email: string }) => {
   }
 }
 
-export const resetPassword = async ({ password, confirmPassword, token }: { password: string, confirmPassword: string, token: string }) => {
+export const resetPassword = async ({ password, confirmPassword, token }: 
+  { password: string, confirmPassword: string, token: string }): Promise<ResetPasswordResponse> => {
   try {
-    const response = await axiosInstance.post<resetPasswordResponse>(`${RESET_PASSWORD_ENDPOINT}/${token}`, {
+    const response = await axiosInstance.post(`${RESET_PASSWORD_ENDPOINT}/${token}`, {
       password,
       confirmPassword
     }) 

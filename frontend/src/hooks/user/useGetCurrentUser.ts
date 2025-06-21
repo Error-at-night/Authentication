@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getCurrentUser } from '../../services/user'
 export function useGetCurrentUser() {
   const { data: currentUser, isPending, isLoading, error, isError, isSuccess } =  useQuery({
-    queryKey: ["user"],
+    queryKey: ["currentUser"],
     queryFn: getCurrentUser,
   })
   

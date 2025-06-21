@@ -1,4 +1,4 @@
-export type getCurrentUserResponse = {
+export type GetCurrentUserResponse = {
   user: {
     fullName: string;
     userId: string;
