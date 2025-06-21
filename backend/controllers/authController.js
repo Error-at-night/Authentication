@@ -45,7 +45,7 @@ const verifyEmail = async (req, res, next) => {
     const user = await User.findOne({ verificationCode })
 
     if(!user) {
-      throw new CustomError.BadRequestError("Invalid verification code")
+      throw new CustomError.BadRequestError("Invalid or expired verification code")
     }
 
     if(user.isVerified) {
@@ -53,7 +53,7 @@ const verifyEmail = async (req, res, next) => {
     }
 
     if(user.verificationCodeExpiresAt && user.verificationCodeExpiresAt < Date.now()) {
-      throw new CustomError.BadRequestError("This verification code has expired")
+      throw new CustomError.BadRequestError("Invalid or expired verification code")
     }
 
     user.isVerified = true
@@ -246,7 +246,7 @@ const forgotPassword = async (req, res, next) => {
 
       const passwordToken = crypto.randomBytes(70).toString("hex")
 
-      const tenMinutes = 1000 * 60 * 1
+      const tenMinutes = 1000 * 60 * 10
 
       const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes)
 
