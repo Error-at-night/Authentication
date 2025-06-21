@@ -137,7 +137,7 @@ const login = async (req, res, next) => {
     }
 
     if (!user.isVerified) {
-      throw new CustomError.UnauthenticatedError("Please verify your email")
+      throw new CustomError.UnauthorizedError("Please verify your email")
     }
 
     const tokenUser = createTokenUser(user)
@@ -246,7 +246,7 @@ const forgotPassword = async (req, res, next) => {
 
       const passwordToken = crypto.randomBytes(70).toString("hex")
 
-      const tenMinutes = 1000 * 60 * 10
+      const tenMinutes = 1000 * 60 * 1
 
       const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes)
 
