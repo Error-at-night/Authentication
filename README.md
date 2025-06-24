@@ -20,7 +20,7 @@ Development. I have actually started reading some documentations that will reall
 - If the user does not verify their email before the verification code expires, the user can request for a new verification code
 - If the user tries to use an invalid verification code or expired verification code, the user will see a toast message telling the user that the verification code has expired or it is invalid
 - If the user tries to login without verifying their email, the user will see a toast message telling the user to verify their email
-- Users can only see the dashboard page only if they are authenticated
+- Only authenticated users can view the dashboard page
 - Only authenticated users can logout
 - Users are also able to reset their password
 
