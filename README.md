@@ -1,7 +1,5 @@
 # Authentication using MERN Stack, JWT, TailwindCSS, Typescript, Redux React-Query, Axios, and React-Hook-Form
 
-Some few months ago I completed a Backend Development Course, so I built an authentication system to practice some of the things I have learnt. I am also looking forward to writing more Backend code (like building APIs and so) and diving deep into Backend Development. I have actually started reading some documentations that will really help me
-
 ## Table of contents
 
 - [Overview](#overview)
