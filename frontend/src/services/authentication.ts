@@ -46,7 +46,7 @@ export const login = async (credentials: { email: string, password: string }): P
 
 export const refreshToken = async (): Promise<RefreshTokenResponse> => {
   try {
-    const response = await axiosInstance.get(REFRESH_TOKEN_ENDPOINT)
+    const response = await axiosInstance.post(REFRESH_TOKEN_ENDPOINT)
     return response.data
   } catch(error) {
     const errorMessage = getErrorMessage(error)
