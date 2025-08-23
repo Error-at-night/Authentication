@@ -1,4 +1,4 @@
-# Authentication using MERN Stack, JWT, TailwindCSS, Typescript, Redux React-Query, Axios, and React-Hook-Form
+# Authentication using MERN Stack, JWT, TailwindCSS, Typescript, Redux, React-Query, Axios, and React-Hook-Form
 
 ## Table of contents
 
